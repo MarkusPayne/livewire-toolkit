@@ -1,0 +1,29 @@
+{
+    "name": "markuspayne/livewire-toolkit",
+    "description": "Reusable Livewire traits and Blade components for datatables, search, and model select options",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        { "name": "Mark Payne" }
+    ],
+    "require": {
+        "php": "^8.3",
+        "livewire/livewire": "^4.0",
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0",
+        "illuminate/cache": "^12.0|^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MarkusPayne\\LivewireToolkit\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MarkusPayne\\LivewireToolkit\\LivewireToolkitServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}

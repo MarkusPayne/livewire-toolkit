@@ -2,7 +2,7 @@
     "name": "markuspayne/livewire-toolkit",
     "description": "Reusable Livewire traits and Blade components for datatables, search, and model select options",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         { "name": "Mark Payne" }
     ],

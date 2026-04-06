@@ -8,12 +8,12 @@ Reusable Livewire traits and Blade components for datatables, search, and model 
 composer require markuspayne/livewire-toolkit
 ```
 
-For local development via path repository:
+Until this package is published on Packagist, add the GitHub repository to your `composer.json`:
 
 ```json
 {
     "repositories": [
-        { "type": "path", "url": "/home/mark/packages/livewire-toolkit" }
+        { "type": "vcs", "url": "https://github.com/MarkusPayne/livewire-toolkit" }
     ]
 }
 ```
@@ -148,3 +148,7 @@ Views will be published to `resources/views/vendor/toolkit/`.
 | `<x-toolkit::data-table.tr>` | Table row with conditional styling (error/warning/success/custom color) |
 | `<x-toolkit::data-table.th>` | Sortable table header cell |
 | `<x-toolkit::data-table.td>` | Table data cell |
+
+## License
+
+MIT - see [LICENSE](LICENSE) for details.

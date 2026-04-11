@@ -18,6 +18,13 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::data-table.row>`
 - `<x-toolkit::data-table.th>`
 - `<x-toolkit::data-table.td>`
+- `<x-toolkit::table.index>`
+- `<x-toolkit::table.thead>`
+- `<x-toolkit::table.header-group>`
+- `<x-toolkit::table.tbody>`
+- `<x-toolkit::table.tr>`
+- `<x-toolkit::table.th>`
+- `<x-toolkit::table.td>`
 - `<x-toolkit::modal.large>`
 - `<x-toolkit::form>`
 - `<x-toolkit::close>`
@@ -159,6 +166,31 @@ Props: `hasError` (red), `hasWarning` (yellow), `hasSuccess` (green), `textColor
         </x-slot:extraHeading>
         ...
     </x-toolkit::data-table.index>
+
+## Basic Table Blade Structure
+
+For static or lightweight tables that don't need sorting or pagination,
+use the `table.*` components instead of `data-table.*`:
+
+    <x-toolkit::table.index>
+        <x-toolkit::table.thead>
+            <x-toolkit::table.tr>
+                <x-toolkit::table.th>Label</x-toolkit::table.th>
+            </x-toolkit::table.tr>
+        </x-toolkit::table.thead>
+
+        <x-toolkit::table.tbody>
+            @foreach ($items as $item)
+                <x-toolkit::table.tr>
+                    <x-toolkit::table.td>{{ $item->value }}</x-toolkit::table.td>
+                </x-toolkit::table.tr>
+            @endforeach
+        </x-toolkit::table.tbody>
+    </x-toolkit::table.index>
+
+Use `table.*` for detail views, inline data, and anywhere you don't need
+WithDataTable. Use `data-table.*` for full Livewire list pages with sort
+and pagination.
 
 ## Modal Component
 

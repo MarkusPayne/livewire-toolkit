@@ -78,6 +78,46 @@ class UserList extends Component
 </x-toolkit::data-table.index>
 ```
 
+### Basic Table
+
+A simple table component set for static or lightweight tables that don't
+require sorting, pagination, or the `WithDataTable` trait.
+
+```blade
+<x-toolkit::table.index>
+    <x-toolkit::table.thead>
+        <x-toolkit::table.tr>
+            <x-toolkit::table.th>Name</x-toolkit::table.th>
+            <x-toolkit::table.th>Value</x-toolkit::table.th>
+        </x-toolkit::table.tr>
+    </x-toolkit::table.thead>
+
+    <x-toolkit::table.tbody>
+        @foreach ($items as $item)
+            <x-toolkit::table.tr>
+                <x-toolkit::table.td>{{ $item->name }}</x-toolkit::table.td>
+                <x-toolkit::table.td>{{ $item->value }}</x-toolkit::table.td>
+            </x-toolkit::table.tr>
+        @endforeach
+    </x-toolkit::table.tbody>
+</x-toolkit::table.index>
+```
+
+#### Differences from data-table
+
+| Feature | `data-table.*` | `table.*` |
+|---------|---------------|-----------|
+| Sorting | Built-in via Alpine | None |
+| Pagination | Built-in per-page selector + links | None |
+| WithDataTable trait | Required | Not needed |
+| Use case | Livewire list pages | Detail views, static tables, inline data |
+
+#### Row conditional styling
+
+```blade
+<x-toolkit::table.tr :hasError="$item->is_expired" :hasSuccess="$item->is_active">
+```
+
 ### WithSearch
 
 ```php
@@ -207,6 +247,13 @@ use with Claude.ai skills or Claude Code skill directories.
 | `<x-toolkit::data-table.tr>` | Table row with conditional styling (error/warning/success/custom color) |
 | `<x-toolkit::data-table.th>` | Sortable table header cell |
 | `<x-toolkit::data-table.td>` | Table data cell |
+| `<x-toolkit::table.index>` | Simple table wrapper (no sort/pagination) |
+| `<x-toolkit::table.thead>` | Simple table header group (disables row hover) |
+| `<x-toolkit::table.header-group>` | Header group with configurable background |
+| `<x-toolkit::table.tbody>` | Simple table body wrapper |
+| `<x-toolkit::table.tr>` | Simple table row with conditional styling (`hasError`, `hasSuccess`, `textColor`) |
+| `<x-toolkit::table.th>` | Simple table header cell |
+| `<x-toolkit::table.td>` | Simple table data cell |
 | `<x-toolkit::modal.large>` | Large modal with backdrop, close button, event-driven open/close |
 | `<x-toolkit::form>` | 12-column CSS grid wrapper for form layouts |
 | `<x-toolkit::close>` | Close/X SVG icon |

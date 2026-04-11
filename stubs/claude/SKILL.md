@@ -33,6 +33,13 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::data-table.row>` | Row — supports `hasError`, `hasWarning`, `hasSuccess`, `textColor` |
 | `<x-toolkit::data-table.th>` | Sortable header cell — accepts `sortField` prop |
 | `<x-toolkit::data-table.td>` | Data cell — accepts `grow` prop |
+| `<x-toolkit::table.index>` | Simple table wrapper — no sorting or pagination |
+| `<x-toolkit::table.thead>` | Static header group (disables hover) |
+| `<x-toolkit::table.header-group>` | Header group with configurable background |
+| `<x-toolkit::table.tbody>` | Body wrapper |
+| `<x-toolkit::table.tr>` | Row with conditional styling |
+| `<x-toolkit::table.th>` | Header cell (no sort) |
+| `<x-toolkit::table.td>` | Data cell |
 | `<x-toolkit::modal.large>` | Large modal with backdrop, event-driven open/close via Alpine |
 | `<x-toolkit::form>` | 12-column CSS grid form wrapper (`md:grid md:gap-6 md:grid-cols-12`) |
 | `<x-toolkit::close>` | Close/X SVG icon (used internally by modal, also standalone) |
@@ -234,3 +241,5 @@ Attributes are merged, so you can add `wire:submit` etc:
 7. Skipping `applySearch()` — if WithSearch is used, the query MUST go through `$this->applySearch()`
 8. Using `<x-toolkit::form.grid>` — the correct component is `<x-toolkit::form>`
 9. Using `<x-close />` — inside toolkit views, always use `<x-toolkit::close />`
+10. Using `data-table.*` for static tables — use `table.*` when you don't need
+    sorting or pagination (detail views, inline data, relation tables)

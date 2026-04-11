@@ -28,6 +28,22 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::modal.large>`
 - `<x-toolkit::form>`
 - `<x-toolkit::close>`
+- `<x-toolkit::input.group>`
+- `<x-toolkit::input.group-inline>`
+- `<x-toolkit::input.error>`
+- `<x-toolkit::input.text>`
+- `<x-toolkit::input.textarea>`
+- `<x-toolkit::input.select>`
+- `<x-toolkit::input.checkbox>`
+- `<x-toolkit::input.radio>`
+- `<x-toolkit::input.toggle>`
+- `<x-toolkit::input.money>`
+- `<x-toolkit::input.yes-no>`
+- `<x-toolkit::input.date>`
+- `<x-toolkit::input.multi-select>`
+- `<x-toolkit::input.signature>`
+- `<x-toolkit::input.file-upload>`
+- `<x-toolkit::input.check-all-rows>`
 
 Never use unprefixed component names for toolkit components.
 
@@ -240,6 +256,35 @@ Use `<x-toolkit::form>` as the wrapper inside modals. It provides a 12-column gr
 
 Note: `<x-input.group>` and `<x-input.text>` are provided by the consuming app, not the toolkit.
 
+## Input Components
+
+Use `<x-toolkit::input.group>` as the wrapper for all form inputs. It provides
+label, error display, help text, and column sizing:
+
+    <x-toolkit::input.group label="Name" for="form.name" :error="$errors->first('form.name')" size="6">
+        <x-toolkit::input.text wire:model="form.name" id="form.name" />
+    </x-toolkit::input.group>
+
+Use `<x-toolkit::input.group-inline>` for side-by-side label/input layout
+(typically for toggles and checkboxes in detail views).
+
+The `size` prop maps to Tailwind `col-span-{n}` classes within the 12-column
+form grid.
+
+### Input components with JS dependencies
+
+- `<x-toolkit::input.date>` — requires `window.flatpickr` (load flatpickr in bootstrap.js)
+- `<x-toolkit::input.signature>` — requires `window.SignaturePad` (load signature_pad in bootstrap.js)
+- `<x-toolkit::input.error>` — uses `$focus` from `@alpinejs/ui` plugin
+
+### yes-no options
+
+`<x-toolkit::input.yes-no>` provides option tags — use inside a select:
+
+    <x-toolkit::input.select wire:model="form.active">
+        <x-toolkit::input.yes-no />
+    </x-toolkit::input.select>
+
 ## Do NOT
 
 - Create class-based Livewire components in `app/Livewire/` — use MFC anonymous classes
@@ -248,3 +293,5 @@ Note: `<x-input.group>` and `<x-input.text>` are provided by the consuming app, 
 - Skip the `$tableName` property — it's required for session-based sort/filter persistence
 - Reference toolkit components without the `toolkit::` prefix
 - Place form content outside modals — all forms render inside `<x-toolkit::modal.large>`
+- Use raw HTML form inputs in forms — use `<x-toolkit::input.*>` components
+- Forget to wrap inputs in `<x-toolkit::input.group>` — it provides error display and sizing

@@ -213,6 +213,62 @@ Input group components from the consuming app use `col-span-{n}` to fill the gri
 A standalone close/X SVG icon. Used internally by the modal but also available
 for direct use.
 
+### Input Components
+
+Form input components for use inside `<x-toolkit::input.group>` wrappers.
+
+#### Group (stacked label)
+
+```blade
+<x-toolkit::input.group label="Email" for="form.email" :error="$errors->first('form.email')" size="6">
+    <x-toolkit::input.text wire:model="form.email" id="form.email" />
+</x-toolkit::input.group>
+```
+
+Props: `label`, `for`, `error`, `helpText`, `size` (1-12, default 6)
+
+#### Group Inline
+
+```blade
+<x-toolkit::input.group-inline label="Status" for="form.active" :error="$errors->first('form.active')" size="6">
+    <x-toolkit::input.toggle wire:model="form.active">Active</x-toolkit::input.toggle>
+</x-toolkit::input.group-inline>
+```
+
+Same props as group, but renders label and input side-by-side.
+
+#### Available Input Components
+
+| Component | Description |
+|-----------|-------------|
+| `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
+| `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
+| `<x-toolkit::input.error>` | Validation error message display |
+| `<x-toolkit::input.text>` | Text/number/email input |
+| `<x-toolkit::input.textarea>` | Textarea with configurable rows |
+| `<x-toolkit::input.select>` | Select dropdown with optional placeholder |
+| `<x-toolkit::input.checkbox>` | Checkbox input |
+| `<x-toolkit::input.radio>` | Radio button with label |
+| `<x-toolkit::input.toggle>` | Toggle/switch with label |
+| `<x-toolkit::input.money>` | Money input with $ prefix and USD suffix |
+| `<x-toolkit::input.yes-no>` | Yes/No option pair (use inside select) |
+| `<x-toolkit::input.date>` | Date picker (requires flatpickr) |
+| `<x-toolkit::input.multi-select>` | Multi-select with tags (Alpine, self-contained) |
+| `<x-toolkit::input.signature>` | Signature pad (requires signature_pad) |
+| `<x-toolkit::input.file-upload>` | Drag-and-drop file upload with progress |
+| `<x-toolkit::input.check-all-rows>` | Select-all checkbox for data tables |
+
+#### JavaScript Dependencies
+
+Some input components require third-party libraries loaded on `window` in
+the consuming app's `bootstrap.js`:
+
+| Component | Dependency | bootstrap.js |
+|-----------|-----------|-------------|
+| `date` | flatpickr | `window.flatpickr = flatpickr;` |
+| `signature` | signature_pad | `window.SignaturePad = SignaturePad;` |
+| `error` | @alpinejs/ui | Alpine plugin registered in app.js |
+
 ## Publishing Views
 
 To customize the blade components:
@@ -257,6 +313,22 @@ use with Claude.ai skills or Claude Code skill directories.
 | `<x-toolkit::modal.large>` | Large modal with backdrop, close button, event-driven open/close |
 | `<x-toolkit::form>` | 12-column CSS grid wrapper for form layouts |
 | `<x-toolkit::close>` | Close/X SVG icon |
+| `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
+| `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
+| `<x-toolkit::input.error>` | Validation error message display |
+| `<x-toolkit::input.text>` | Text/number/email input |
+| `<x-toolkit::input.textarea>` | Textarea with configurable rows |
+| `<x-toolkit::input.select>` | Select dropdown with optional placeholder |
+| `<x-toolkit::input.checkbox>` | Checkbox input |
+| `<x-toolkit::input.radio>` | Radio button with label |
+| `<x-toolkit::input.toggle>` | Toggle/switch with label |
+| `<x-toolkit::input.money>` | Money input with $ prefix and USD suffix |
+| `<x-toolkit::input.yes-no>` | Yes/No option pair (use inside select) |
+| `<x-toolkit::input.date>` | Date picker (requires flatpickr) |
+| `<x-toolkit::input.multi-select>` | Multi-select with tags (Alpine, self-contained) |
+| `<x-toolkit::input.signature>` | Signature pad (requires signature_pad) |
+| `<x-toolkit::input.file-upload>` | Drag-and-drop file upload with progress |
+| `<x-toolkit::input.check-all-rows>` | Select-all checkbox for data tables |
 
 ## License
 

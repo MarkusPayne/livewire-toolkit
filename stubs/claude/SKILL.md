@@ -43,6 +43,22 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::modal.large>` | Large modal with backdrop, event-driven open/close via Alpine |
 | `<x-toolkit::form>` | 12-column CSS grid form wrapper (`md:grid md:gap-6 md:grid-cols-12`) |
 | `<x-toolkit::close>` | Close/X SVG icon (used internally by modal, also standalone) |
+| `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
+| `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
+| `<x-toolkit::input.error>` | Validation error message (requires `$focus` from @alpinejs/ui) |
+| `<x-toolkit::input.text>` | Text/number/email input |
+| `<x-toolkit::input.textarea>` | Textarea with configurable rows |
+| `<x-toolkit::input.select>` | Select dropdown with optional placeholder |
+| `<x-toolkit::input.checkbox>` | Checkbox input |
+| `<x-toolkit::input.radio>` | Radio button with label |
+| `<x-toolkit::input.toggle>` | Toggle/switch with label |
+| `<x-toolkit::input.money>` | Money input with $ prefix and USD suffix |
+| `<x-toolkit::input.yes-no>` | Yes/No option pair (use inside select) |
+| `<x-toolkit::input.date>` | Date picker (requires `window.flatpickr`) |
+| `<x-toolkit::input.multi-select>` | Multi-select with tags (Alpine, self-contained) |
+| `<x-toolkit::input.signature>` | Signature pad (requires `window.SignaturePad`) |
+| `<x-toolkit::input.file-upload>` | Drag-and-drop file upload with progress |
+| `<x-toolkit::input.check-all-rows>` | Select-all checkbox for data tables |
 
 ## Generating Prompts That Use The Toolkit
 
@@ -243,3 +259,6 @@ Attributes are merged, so you can add `wire:submit` etc:
 9. Using `<x-close />` — inside toolkit views, always use `<x-toolkit::close />`
 10. Using `data-table.*` for static tables — use `table.*` when you don't need
     sorting or pagination (detail views, inline data, relation tables)
+11. Raw HTML inputs in forms — always use `<x-toolkit::input.*>` components
+12. Missing `<x-toolkit::input.group>` wrapper — provides label, error, and col-span sizing
+13. Forgetting JS dependencies — date needs flatpickr, signature needs SignaturePad

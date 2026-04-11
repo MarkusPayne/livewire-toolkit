@@ -25,7 +25,7 @@
             <p class="mb-2 text-gray-600">Drag and drop your file here</p>
             <p class="pb-2 text-sm text-gray-500">Or</p>
 
-            <button type="button" @click="$refs.fileInput.click()" class="mx-auto inline-flex items-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 cursor-pointer">Browse</button>
+            <button type="button" @click="$refs.fileInput.click()" class="mx-auto inline-flex items-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 cursor-pointer">Browse</button>
             <div x-show="isUploading">
                 <progress max="100" x-bind:value="progress"></progress>
             </div>

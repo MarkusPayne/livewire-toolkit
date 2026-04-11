@@ -44,6 +44,11 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::input.signature>`
 - `<x-toolkit::input.file-upload>`
 - `<x-toolkit::input.check-all-rows>`
+- `<x-toolkit::button>`
+- `<x-toolkit::button.primary>`
+- `<x-toolkit::button.secondary>`
+- `<x-toolkit::button.danger>`
+- `<x-toolkit::button.link>`
 
 Never use unprefixed component names for toolkit components.
 
@@ -284,6 +289,17 @@ form grid.
     <x-toolkit::input.select wire:model="form.active">
         <x-toolkit::input.yes-no />
     </x-toolkit::input.select>
+
+## Button Components
+
+Use toolkit buttons for consistent styling across forms and actions:
+
+    <x-toolkit::button.primary wire:click="save">Save</x-toolkit::button.primary>
+    <x-toolkit::button.secondary x-on:click="$dispatch('close-modal')">Cancel</x-toolkit::button.secondary>
+    <x-toolkit::button.danger wire:click="delete">Delete</x-toolkit::button.danger>
+
+The base `<x-toolkit::button>` includes `wire:loading.attr="disabled"` automatically.
+Variant buttons (primary, secondary, danger) extend the base button.
 
 ## Do NOT
 

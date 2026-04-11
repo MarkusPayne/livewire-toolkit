@@ -269,6 +269,34 @@ the consuming app's `bootstrap.js`:
 | `signature` | signature_pad | `window.SignaturePad = SignaturePad;` |
 | `error` | @alpinejs/ui | Alpine plugin registered in app.js |
 
+### Button Components
+
+```blade
+<x-toolkit::button>Default</x-toolkit::button>
+<x-toolkit::button.primary>Save</x-toolkit::button.primary>
+<x-toolkit::button.secondary>Cancel</x-toolkit::button.secondary>
+<x-toolkit::button.danger>Delete</x-toolkit::button.danger>
+<x-toolkit::button.link>View Details</x-toolkit::button.link>
+```
+
+All buttons support the `disabled` prop and have `wire:loading.attr="disabled"`
+built in (except `link` which is a plain styled button).
+
+| Component | Description |
+|-----------|-------------|
+| `<x-toolkit::button>` | Base button with border, focus ring, loading state |
+| `<x-toolkit::button.primary>` | Sky blue filled button |
+| `<x-toolkit::button.secondary>` | Gray outlined button with dark mode support |
+| `<x-toolkit::button.danger>` | Red filled button for destructive actions |
+| `<x-toolkit::button.link>` | Text-only button styled as a link |
+
+Note: Button colors use `sky-*` as a generic default. If your project defines
+a custom `--color-primary` theme, publish the views and update the classes:
+
+```bash
+php artisan vendor:publish --tag=livewire-toolkit-views
+```
+
 ## Publishing Views
 
 To customize the blade components:
@@ -313,6 +341,11 @@ use with Claude.ai skills or Claude Code skill directories.
 | `<x-toolkit::modal.large>` | Large modal with backdrop, close button, event-driven open/close |
 | `<x-toolkit::form>` | 12-column CSS grid wrapper for form layouts |
 | `<x-toolkit::close>` | Close/X SVG icon |
+| `<x-toolkit::button>` | Base button with border, focus ring, loading state |
+| `<x-toolkit::button.primary>` | Sky blue filled button |
+| `<x-toolkit::button.secondary>` | Gray outlined button with dark mode support |
+| `<x-toolkit::button.danger>` | Red filled button for destructive actions |
+| `<x-toolkit::button.link>` | Text-only button styled as a link |
 | `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
 | `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
 | `<x-toolkit::input.error>` | Validation error message display |

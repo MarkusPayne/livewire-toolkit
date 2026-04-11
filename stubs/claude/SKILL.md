@@ -59,6 +59,11 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::input.signature>` | Signature pad (requires `window.SignaturePad`) |
 | `<x-toolkit::input.file-upload>` | Drag-and-drop file upload with progress |
 | `<x-toolkit::input.check-all-rows>` | Select-all checkbox for data tables |
+| `<x-toolkit::button>` | Base button with loading state |
+| `<x-toolkit::button.primary>` | Sky blue primary action button |
+| `<x-toolkit::button.secondary>` | Gray secondary/cancel button |
+| `<x-toolkit::button.danger>` | Red destructive action button |
+| `<x-toolkit::button.link>` | Text-only link-styled button |
 
 ## Generating Prompts That Use The Toolkit
 

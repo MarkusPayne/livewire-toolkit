@@ -128,6 +128,51 @@ $options = Sport::getOptions([
 ]);
 ```
 
+### Modal
+
+```blade
+<x-toolkit::modal.large name="edit-athlete" title="Edit Athlete">
+    {{-- Content here --}}
+</x-toolkit::modal.large>
+```
+
+Props:
+- `name` (string, default: `'large-modal'`) — used for event-based open/close
+- `title` (string, optional) — currently reserved, not rendered in header
+
+Opening and closing:
+
+```blade
+{{-- Open --}}
+<button x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })">Edit</button>
+
+{{-- Close from inside --}}
+<button x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</button>
+
+{{-- Close without specifying name closes the current modal --}}
+<button x-on:click="$dispatch('close-modal')">Cancel</button>
+```
+
+### Form Grid
+
+```blade
+<x-toolkit::form>
+    {{-- 12-column grid with gap-6. Use <x-input.group size="6"> etc. --}}
+</x-toolkit::form>
+```
+
+The form component provides `md:grid md:gap-6 md:grid-cols-12 items-start`.
+Input group components from the consuming app use `col-span-{n}` to fill the grid.
+
+### Close Icon
+
+```blade
+<x-toolkit::close />
+```
+
+A standalone close/X SVG icon. Used internally by the modal but also available
+for direct use.
+
 ## Publishing Views
 
 To customize the blade components:
@@ -137,6 +182,20 @@ php artisan vendor:publish --tag=livewire-toolkit-views
 ```
 
 Views will be published to `resources/views/vendor/toolkit/`.
+
+## Claude Code Integration
+
+Publish the Claude Code rules file for AI-assisted development:
+
+```bash
+php artisan vendor:publish --tag=livewire-toolkit-claude-rules
+```
+
+This publishes `.claude/rules/livewire-toolkit.md` which teaches Claude Code
+how to correctly use the toolkit's traits and components.
+
+A SKILL.md reference file is also included at `stubs/claude/SKILL.md` for
+use with Claude.ai skills or Claude Code skill directories.
 
 ## Available Components
 
@@ -148,6 +207,9 @@ Views will be published to `resources/views/vendor/toolkit/`.
 | `<x-toolkit::data-table.tr>` | Table row with conditional styling (error/warning/success/custom color) |
 | `<x-toolkit::data-table.th>` | Sortable table header cell |
 | `<x-toolkit::data-table.td>` | Table data cell |
+| `<x-toolkit::modal.large>` | Large modal with backdrop, close button, event-driven open/close |
+| `<x-toolkit::form>` | 12-column CSS grid wrapper for form layouts |
+| `<x-toolkit::close>` | Close/X SVG icon |
 
 ## License
 

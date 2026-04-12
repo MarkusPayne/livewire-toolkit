@@ -267,3 +267,5 @@ Attributes are merged, so you can add `wire:submit` etc:
 11. Raw HTML inputs in forms — always use `<x-toolkit::input.*>` components
 12. Missing `<x-toolkit::input.group>` wrapper — provides label, error, and col-span sizing
 13. Forgetting JS dependencies — date needs flatpickr, signature needs SignaturePad
+14. Missing toolkit CSS import — add `@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);` to app.css
+15. Duplicating form element base styles — these come from the toolkit CSS, not the app

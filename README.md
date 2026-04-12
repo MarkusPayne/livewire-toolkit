@@ -26,6 +26,44 @@ Until this package is published on Packagist, add the GitHub repository to your 
 - Tailwind CSS (consuming project must provide)
 - Alpine.js (consuming project must provide)
 
+## CSS Setup
+
+The toolkit includes base styles for form inputs, checkboxes, radio buttons,
+and the flatpickr date picker. Import it in your `app.css`:
+
+```css
+@import 'tailwindcss';
+@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
+
+@plugin '@tailwindcss/forms';
+```
+
+Import it **after** `@import 'tailwindcss'` and **before** your own styles.
+
+Alternatively, publish the CSS to customize it:
+
+```bash
+php artisan vendor:publish --tag=livewire-toolkit-css
+```
+
+Then import the published copy instead:
+
+```css
+@import './vendor/toolkit.css' layer(base);
+```
+
+### Prerequisites
+
+The toolkit CSS builds on `@tailwindcss/forms`. Make sure your `app.css`
+includes `@plugin '@tailwindcss/forms'`.
+
+### Custom Primary Color
+
+The toolkit uses `sky-*` as its default accent color (checkboxes, radio
+buttons, primary button). If your project defines a custom `--color-primary`
+in your `@theme` block, override the relevant classes by adding styles after
+the toolkit import or by publishing the CSS.
+
 ## Usage
 
 ### WithDataTable
@@ -268,6 +306,16 @@ the consuming app's `bootstrap.js`:
 | `date` | flatpickr | `window.flatpickr = flatpickr;` |
 | `signature` | signature_pad | `window.SignaturePad = SignaturePad;` |
 | `error` | @alpinejs/ui | Alpine plugin registered in app.js |
+
+#### CSS
+
+Import the toolkit CSS in your `app.css` for proper input styling:
+
+```css
+@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
+```
+
+See [CSS Setup](#css-setup) for details.
 
 ### Button Components
 

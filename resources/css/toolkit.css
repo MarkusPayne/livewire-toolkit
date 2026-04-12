@@ -1,0 +1,73 @@
+/*
+ * livewire-toolkit base styles
+ *
+ * Import this file in your app.css:
+ *   @import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
+ *
+ * Requires: @tailwindcss/forms plugin in your app.css
+ *
+ * These styles provide base formatting for toolkit input components.
+ * Override by publishing views or adding styles after this import.
+ */
+
+@layer components {
+    [type='text'],
+    [type='email'],
+    [type='url'],
+    [type='password'],
+    [type='number'],
+    [type='date'],
+    [type='datetime-local'],
+    [type='month'],
+    [type='search'],
+    [type='tel'],
+    [type='time'],
+    [type='week'],
+    [multiple],
+    textarea,
+    select {
+        @apply inline-block w-full rounded-xs border-gray-300 p-2 text-sm text-gray-600 focus:ring-0 dark:text-gray-200;
+    }
+
+    [type='checkbox'] {
+        @apply border-gray-300 focus:ring-0 text-gray-600 dark:text-gray-200 ring-0;
+    }
+
+    [type='radio']:focus,
+    [type='checkbox']:focus {
+        @apply rounded-xs border-gray-300 text-sky-600 focus:ring-0 dark:text-gray-200;
+    }
+
+    [type='radio']:checked,
+    [type='checkbox']:checked {
+        @apply rounded-xs border-gray-300 text-sky-600 focus:ring-0 dark:text-gray-200;
+    }
+
+    label > span {
+        @apply font-medium text-gray-600 dark:text-gray-200;
+    }
+
+    input:disabled,
+    select:disabled {
+        @apply bg-gray-200;
+    }
+}
+
+@layer utilities {
+    [x-cloak] {
+        display: none;
+    }
+}
+
+/* flatpickr overrides (for <x-toolkit::input.date>) */
+.flatpickr-months {
+    height: auto;
+}
+
+.flatpickr-current-month {
+    padding: 0;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    width: auto;
+}

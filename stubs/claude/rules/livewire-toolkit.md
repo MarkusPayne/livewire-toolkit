@@ -52,6 +52,22 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 
 Never use unprefixed component names for toolkit components.
 
+## CSS Setup
+
+Projects using the toolkit must import the base CSS in their `app.css`:
+
+    @import 'tailwindcss';
+    @import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
+
+    @plugin '@tailwindcss/forms';
+
+This provides base styles for all input types, checkboxes, radio buttons,
+disabled states, labels, and flatpickr. The `@tailwindcss/forms` plugin is
+a prerequisite.
+
+Do NOT duplicate these styles in the consuming app's CSS — they come from
+the toolkit.
+
 ## WithDataTable Trait
 
 Every table component MUST:

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace MarkusPayne\LivewireToolkit\Model;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 trait HasSelectOptionsTrait
@@ -22,9 +21,9 @@ trait HasSelectOptionsTrait
      *     cache?: bool,
      *     cacheDuration?: int,
      * }  $parameters
-     * @return Collection<int|string, mixed>
+     * @return array<int|string, mixed>
      */
-    public static function getOptions(array $parameters = []): Collection
+    public static function getOptions(array $parameters = []): array
     {
         $key = $parameters['key'] ?? 'id';
         $value = $parameters['value'] ?? 'name';
@@ -39,7 +38,7 @@ trait HasSelectOptionsTrait
         $taggedCache = Cache::tags([static::getOptionsCacheTag()]);
 
         if ($useCache && $taggedCache->has($cacheKey)) {
-            return collect($taggedCache->get($cacheKey));
+            return $taggedCache->get($cacheKey);
         }
 
         $query = static::buildOptionsQuery($filters, $activeOnly, $sortBy);
@@ -49,7 +48,7 @@ trait HasSelectOptionsTrait
             $taggedCache->put($cacheKey, $options->all(), $cacheDuration);
         }
 
-        return $options;
+        return $options->all();
     }
 
     public static function forgetOptionsCache(): void

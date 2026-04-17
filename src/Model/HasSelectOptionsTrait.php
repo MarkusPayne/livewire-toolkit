@@ -39,14 +39,14 @@ trait HasSelectOptionsTrait
         $taggedCache = Cache::tags([static::getOptionsCacheTag()]);
 
         if ($useCache && $taggedCache->has($cacheKey)) {
-            return $taggedCache->get($cacheKey);
+            return collect($taggedCache->get($cacheKey));
         }
 
         $query = static::buildOptionsQuery($filters, $activeOnly, $sortBy);
         $options = $query->get()->unique($key)->pluck($value, $key);
 
         if ($useCache) {
-            $taggedCache->put($cacheKey, $options, $cacheDuration);
+            $taggedCache->put($cacheKey, $options->all(), $cacheDuration);
         }
 
         return $options;

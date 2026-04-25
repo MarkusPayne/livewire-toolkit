@@ -1,6 +1,6 @@
 # livewire-toolkit — Package Rules
 
-This project uses the `markuspayne/livewire-toolkit` Composer package. Follow these rules whenever building Livewire components that use datatables, search, forms, modals, or model select options.
+This project uses the `markuspayne/livewire-toolkit` Composer package. Follow these rules whenever building Livewire components that use datatables, search, forms, modals, menus, or model select options.
 
 ## Namespace
 
@@ -11,13 +11,17 @@ All toolkit classes are under `MarkusPayne\LivewireToolkit\`:
 
 ## Blade Component Prefix
 
-All toolkit blade components use the `toolkit::` view namespace prefix:
+All toolkit blade components use the `toolkit::` view namespace prefix.
+
+Data Table (sortable, paginated — requires WithDataTable trait):
 - `<x-toolkit::data-table.index>`
-- `<x-toolkit::data-table.header>`
-- `<x-toolkit::data-table.body>`
-- `<x-toolkit::data-table.row>`
+- `<x-toolkit::data-table.thead>`
+- `<x-toolkit::data-table.tbody>`
+- `<x-toolkit::data-table.tr>`
 - `<x-toolkit::data-table.th>`
 - `<x-toolkit::data-table.td>`
+
+Basic Table (static, no trait needed):
 - `<x-toolkit::table.index>`
 - `<x-toolkit::table.thead>`
 - `<x-toolkit::table.header-group>`
@@ -25,8 +29,12 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::table.tr>`
 - `<x-toolkit::table.th>`
 - `<x-toolkit::table.td>`
+
+Modal & Form:
 - `<x-toolkit::modal.large>`
 - `<x-toolkit::form>`
+
+Icons:
 - `<x-toolkit::icon.close>`
 - `<x-toolkit::icon.edit>`
 - `<x-toolkit::icon.delete>`
@@ -34,6 +42,8 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::icon.download>`
 - `<x-toolkit::icon.chevron-down>`
 - `<x-toolkit::icon.ellipsis>`
+
+Inputs:
 - `<x-toolkit::input.group>`
 - `<x-toolkit::input.group-inline>`
 - `<x-toolkit::input.error>`
@@ -50,11 +60,26 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::input.signature>`
 - `<x-toolkit::input.file-upload>`
 - `<x-toolkit::input.check-all-rows>`
+
+Buttons:
 - `<x-toolkit::button>`
 - `<x-toolkit::button.primary>`
 - `<x-toolkit::button.secondary>`
 - `<x-toolkit::button.danger>`
 - `<x-toolkit::button.link>`
+
+Menu (requires @alpinejs/ui):
+- `<x-toolkit::menu.index>`
+- `<x-toolkit::menu.button>`
+- `<x-toolkit::menu.button-actions>`
+- `<x-toolkit::menu.button-dots>`
+- `<x-toolkit::menu.items>`
+- `<x-toolkit::menu.item>`
+- `<x-toolkit::menu.item-edit>`
+- `<x-toolkit::menu.item-delete>`
+- `<x-toolkit::menu.item-add>`
+- `<x-toolkit::menu.item-download>`
+- `<x-toolkit::menu.close>`
 
 Never use unprefixed component names for toolkit components.
 
@@ -128,80 +153,39 @@ Used alongside WithDataTable for filterable tables:
 
 Supported filter operators: `like`, `match` (fulltext), `in`, `hasIn`, `pivot`, `range`, `=`, and any SQL operator.
 
-Example:
-
-    use MarkusPayne\LivewireToolkit\Concerns\WithSearch;
-
-    new class extends Component
-    {
-        use WithDataTable, WithSearch;
-
-        public array $filters = [
-            'name' => 'like',
-            'email' => 'like',
-            'active' => '=',
-            'role_id' => 'in',
-        ];
-
-        public array $tableSearchFields = ['name', 'email'];
-
-        public function tableQuery(): Builder
-        {
-            return $this->applySearch(User::query());
-        }
-    }
-
 ## HasSelectOptionsTrait
 
-Add to any Eloquent model that needs to provide `<select>` options:
+Add to any Eloquent model that needs to provide `<select>` options.
+Returns a plain array keyed by the key field, valued by the value field.
+Results are cached with Redis tags and auto-flushed on model save.
 
-    use MarkusPayne\LivewireToolkit\Model\HasSelectOptionsTrait;
-
-    class Sport extends Model
-    {
-        use HasSelectOptionsTrait;
-    }
-
-    // Default: keyed by id, valued by name
     $options = Sport::getOptions();
-
-    // Custom value field, active-only, with filters
-    $options = Sport::getOptions([
-        'value' => 'slug',
-        'activeOnly' => true,
-        'filters' => [
-            ['field' => 'type', 'value' => 'team'],
-        ],
-    ]);
+    $options = Sport::getOptions(['value' => 'slug', 'activeOnly' => true]);
 
 ## DataTable Blade Structure
 
 Always nest components in this exact order:
 
     <x-toolkit::data-table.index>
-        <x-toolkit::data-table.header>
-            <x-toolkit::data-table.row>
+        <x-toolkit::data-table.thead>
+            <x-toolkit::data-table.tr>
                 <x-toolkit::data-table.th sortField="column_name">Label</x-toolkit::data-table.th>
                 <x-toolkit::data-table.th>Non-sortable</x-toolkit::data-table.th>
-            </x-toolkit::data-table.row>
-        </x-toolkit::data-table.header>
+            </x-toolkit::data-table.tr>
+        </x-toolkit::data-table.thead>
 
-        <x-toolkit::data-table.body>
+        <x-toolkit::data-table.tbody>
             @foreach ($this->rows as $row)
-                <x-toolkit::data-table.row>
+                <x-toolkit::data-table.tr>
                     <x-toolkit::data-table.td>{{ $row->column }}</x-toolkit::data-table.td>
-                </x-toolkit::data-table.row>
+                </x-toolkit::data-table.tr>
             @endforeach
-        </x-toolkit::data-table.body>
+        </x-toolkit::data-table.tbody>
     </x-toolkit::data-table.index>
 
-### Row conditional styling
+Row conditional styling props: `hasError` (red), `hasWarning` (yellow), `hasSuccess` (green), `textColor` (custom hex).
 
-    <x-toolkit::data-table.row :hasError="$row->is_expired" :hasWarning="$row->needs_review">
-
-Props: `hasError` (red), `hasWarning` (yellow), `hasSuccess` (green), `textColor` (custom hex).
-
-### Extra heading slot
+Extra heading slot for search/filters above the table:
 
     <x-toolkit::data-table.index>
         <x-slot:extraHeading>
@@ -212,8 +196,7 @@ Props: `hasError` (red), `hasWarning` (yellow), `hasSuccess` (green), `textColor
 
 ## Basic Table Blade Structure
 
-For static or lightweight tables that don't need sorting or pagination,
-use the `table.*` components instead of `data-table.*`:
+For static or lightweight tables that don't need sorting or pagination:
 
     <x-toolkit::table.index>
         <x-toolkit::table.thead>
@@ -231,32 +214,22 @@ use the `table.*` components instead of `data-table.*`:
         </x-toolkit::table.tbody>
     </x-toolkit::table.index>
 
-Use `table.*` for detail views, inline data, and anywhere you don't need
-WithDataTable. Use `data-table.*` for full Livewire list pages with sort
-and pagination.
+Use `table.*` for detail views, inline data. Use `data-table.*` for Livewire list pages.
 
 ## Modal Component
 
-### Large Modal
-
     <x-toolkit::modal.large name="edit-athlete">
-        {{-- Content here --}}
+        {{-- Content --}}
     </x-toolkit::modal.large>
 
-Props:
-- `name` (string, default: `'large-modal'`) — used for event-based open/close
-- `title` (string, optional) — reserved for future use
-
-Opening and closing via Alpine events:
+Props: `name` (string, default: `'large-modal'`), `title` (string, optional — reserved).
 
     {{-- Open --}}
-    <button x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })">Edit</button>
+    x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })"
 
-    {{-- Close by name --}}
-    <button x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</button>
-
-    {{-- Close without name (closes current modal) --}}
-    <button x-on:click="$dispatch('close-modal')">Cancel</button>
+    {{-- Close --}}
+    x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })"
+    x-on:click="$dispatch('close-modal')"
 
 ### Modal Event Pattern
 
@@ -267,46 +240,29 @@ Opening and closing via Alpine events:
 
 ## Form Grid
 
-Use `<x-toolkit::form>` as the wrapper inside modals. It provides a 12-column grid
-(`md:grid md:gap-6 md:grid-cols-12 items-start`):
+Use `<x-toolkit::form>` inside modals. Provides `md:grid md:gap-6 md:grid-cols-12 items-start`.
+Attributes merge, so add `wire:submit` etc:
 
-    <x-toolkit::modal.large name="create-athlete">
-        <x-toolkit::form>
-            <x-input.group label="First Name" for="form.firstName" size="6">
-                <x-input.text wire:model="form.firstName" id="form.firstName" />
-            </x-input.group>
-            <x-input.group label="Last Name" for="form.lastName" size="6">
-                <x-input.text wire:model="form.lastName" id="form.lastName" />
-            </x-input.group>
-        </x-toolkit::form>
-    </x-toolkit::modal.large>
-
-Note: `<x-input.group>` and `<x-input.text>` are provided by the consuming app, not the toolkit.
+    <x-toolkit::form wire:submit="save">
+        <x-toolkit::input.group label="Name" for="form.name" :error="$errors->first('form.name')" size="6">
+            <x-toolkit::input.text wire:model="form.name" id="form.name" />
+        </x-toolkit::input.group>
+    </x-toolkit::form>
 
 ## Input Components
 
 Use `<x-toolkit::input.group>` as the wrapper for all form inputs. It provides
-label, error display, help text, and column sizing:
+label, error display, help text, and column sizing via the `size` prop (1-12).
 
-    <x-toolkit::input.group label="Name" for="form.name" :error="$errors->first('form.name')" size="6">
-        <x-toolkit::input.text wire:model="form.name" id="form.name" />
-    </x-toolkit::input.group>
+Use `<x-toolkit::input.group-inline>` for side-by-side label/input layout.
 
-Use `<x-toolkit::input.group-inline>` for side-by-side label/input layout
-(typically for toggles and checkboxes in detail views).
+### JS dependencies
 
-The `size` prop maps to Tailwind `col-span-{n}` classes within the 12-column
-form grid.
-
-### Input components with JS dependencies
-
-- `<x-toolkit::input.date>` — requires `window.flatpickr` (load flatpickr in bootstrap.js)
-- `<x-toolkit::input.signature>` — requires `window.SignaturePad` (load signature_pad in bootstrap.js)
-- `<x-toolkit::input.error>` — uses `$focus` from `@alpinejs/ui` plugin
+- `<x-toolkit::input.date>` — requires `window.flatpickr`
+- `<x-toolkit::input.signature>` — requires `window.SignaturePad`
+- `<x-toolkit::input.error>` — uses `$focus` from `@alpinejs/ui`
 
 ### yes-no options
-
-`<x-toolkit::input.yes-no>` provides option tags — use inside a select:
 
     <x-toolkit::input.select wire:model="form.active">
         <x-toolkit::input.yes-no />
@@ -314,24 +270,35 @@ form grid.
 
 ## Icon Components
 
-Use `<x-toolkit::icon.*>` for consistent icons across the project:
+Use `<x-toolkit::icon.*>` for consistent icons. All accept $attributes for class merging:
 
     <x-toolkit::icon.edit class="size-3 text-sky-600" />
     <x-toolkit::icon.delete class="size-3 text-red-600" />
 
-All icons accept $attributes for class merging. Use these instead of
-inline SVGs or external icon packages.
-
 ## Button Components
-
-Use toolkit buttons for consistent styling across forms and actions:
 
     <x-toolkit::button.primary wire:click="save">Save</x-toolkit::button.primary>
     <x-toolkit::button.secondary x-on:click="$dispatch('close-modal')">Cancel</x-toolkit::button.secondary>
     <x-toolkit::button.danger wire:click="delete">Delete</x-toolkit::button.danger>
 
-The base `<x-toolkit::button>` includes `wire:loading.attr="disabled"` automatically.
-Variant buttons (primary, secondary, danger) extend the base button.
+Base `<x-toolkit::button>` includes `wire:loading.attr="disabled"` automatically.
+Variant buttons extend the base. Colors use `sky-*` as generic default.
+
+## Menu Components
+
+Use `<x-toolkit::menu.*>` for action dropdowns on table rows:
+
+    <x-toolkit::menu.index>
+        <x-toolkit::menu.button-actions />
+        <x-toolkit::menu.items>
+            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-model', { id: {{ $row->id }} })" />
+            <x-toolkit::menu.item-delete wire:click="delete({{ $row->id }})" />
+        </x-toolkit::menu.items>
+    </x-toolkit::menu.index>
+
+Shortcut items (item-edit, item-delete, item-add, item-download) use
+`<x-toolkit::icon.*>` components and include default labels. Pass slot
+content to override the label. Requires `@alpinejs/ui` plugin.
 
 ## Do NOT
 
@@ -341,5 +308,8 @@ Variant buttons (primary, secondary, danger) extend the base button.
 - Skip the `$tableName` property — it's required for session-based sort/filter persistence
 - Reference toolkit components without the `toolkit::` prefix
 - Place form content outside modals — all forms render inside `<x-toolkit::modal.large>`
-- Use raw HTML form inputs in forms — use `<x-toolkit::input.*>` components
-- Forget to wrap inputs in `<x-toolkit::input.group>` — it provides error display and sizing
+- Use raw HTML form inputs — use `<x-toolkit::input.*>` components
+- Forget to wrap inputs in `<x-toolkit::input.group>` — provides error display and sizing
+- Use inline SVGs for common icons — use `<x-toolkit::icon.*>` instead
+- Use `data-table.*` for static tables — use `table.*` when no sort/pagination needed
+- Use old component names — data-table uses `thead`/`tbody`/`tr` not `header`/`body`/`row`

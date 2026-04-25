@@ -1,6 +1,6 @@
 ---
 name: livewire-toolkit
-description: Reference for the markuspayne/livewire-toolkit Composer package — provides WithDataTable, WithSearch, HasSelectOptionsTrait traits and toolkit:: Blade components (data-table, modal, form, close). Use this skill whenever generating prompts, writing code, or planning features that involve datatables, searchable/filterable lists, model select options, modal forms, or any Livewire component scaffolding. Also trigger when the user mentions "toolkit", "data table", "WithDataTable", "WithSearch", "HasSelectOptionsTrait", or references "x-toolkit::" blade components.
+description: Reference for the markuspayne/livewire-toolkit Composer package — provides WithDataTable, WithSearch, HasSelectOptionsTrait traits and toolkit:: Blade components (data-table, table, modal, form, icon, input, button, menu). Use this skill whenever generating prompts, writing code, or planning features that involve datatables, searchable/filterable lists, model select options, modal forms, menus, or any Livewire component scaffolding. Also trigger when the user mentions "toolkit", "data table", "WithDataTable", "WithSearch", "HasSelectOptionsTrait", or references "x-toolkit::" blade components.
 ---
 
 # livewire-toolkit Package Reference
@@ -21,16 +21,16 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 |-------|-----------|---------|
 | `WithDataTable` | `MarkusPayne\LivewireToolkit\Concerns` | Sort, paginate, per-page selector for any table |
 | `WithSearch` | `MarkusPayne\LivewireToolkit\Concerns` | Filterable/searchable queries with multiple operator types |
-| `HasSelectOptionsTrait` | `MarkusPayne\LivewireToolkit\Model` | Generate `<select>` option collections from any Eloquent model |
+| `HasSelectOptionsTrait` | `MarkusPayne\LivewireToolkit\Model` | Generate `<select>` option arrays from any Eloquent model |
 
 ### Blade Components (all prefixed `toolkit::`)
 
 | Component | Purpose |
 |-----------|---------|
 | `<x-toolkit::data-table.index>` | Table wrapper — per-page selector, pagination, optional export icon |
-| `<x-toolkit::data-table.header>` | Header group — manages Alpine sort state (`sortBy`, `sortDir`) |
-| `<x-toolkit::data-table.body>` | Body wrapper |
-| `<x-toolkit::data-table.row>` | Row — supports `hasError`, `hasWarning`, `hasSuccess`, `textColor` |
+| `<x-toolkit::data-table.thead>` | Header group — manages Alpine sort state (`sortBy`, `sortDir`) |
+| `<x-toolkit::data-table.tbody>` | Body wrapper |
+| `<x-toolkit::data-table.tr>` | Row — supports `hasError`, `hasWarning`, `hasSuccess`, `textColor` |
 | `<x-toolkit::data-table.th>` | Sortable header cell — accepts `sortField` prop |
 | `<x-toolkit::data-table.td>` | Data cell — accepts `grow` prop |
 | `<x-toolkit::table.index>` | Simple table wrapper — no sorting or pagination |
@@ -42,7 +42,7 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::table.td>` | Data cell |
 | `<x-toolkit::modal.large>` | Large modal with backdrop, event-driven open/close via Alpine |
 | `<x-toolkit::form>` | 12-column CSS grid form wrapper (`md:grid md:gap-6 md:grid-cols-12`) |
-| `<x-toolkit::icon.close>` | X / close icon (used internally by modal, also standalone) |
+| `<x-toolkit::icon.close>` | X / close icon |
 | `<x-toolkit::icon.edit>` | Pencil / edit icon |
 | `<x-toolkit::icon.delete>` | Trash / delete icon |
 | `<x-toolkit::icon.add>` | Plus / add icon |
@@ -70,6 +70,17 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::button.secondary>` | Gray secondary/cancel button |
 | `<x-toolkit::button.danger>` | Red destructive action button |
 | `<x-toolkit::button.link>` | Text-only link-styled button |
+| `<x-toolkit::menu.index>` | Menu wrapper with Alpine state |
+| `<x-toolkit::menu.button>` | Base trigger button |
+| `<x-toolkit::menu.button-actions>` | "Actions" trigger with chevron icon |
+| `<x-toolkit::menu.button-dots>` | Ellipsis dot trigger |
+| `<x-toolkit::menu.items>` | Dropdown panel with positioning |
+| `<x-toolkit::menu.item>` | Generic menu item |
+| `<x-toolkit::menu.item-edit>` | Edit item with edit icon |
+| `<x-toolkit::menu.item-delete>` | Delete item with trash icon and confirm prompt |
+| `<x-toolkit::menu.item-add>` | Add item with plus icon |
+| `<x-toolkit::menu.item-download>` | Download item with download icon |
+| `<x-toolkit::menu.close>` | Wrapper that closes menu on click |
 
 ## Generating Prompts That Use The Toolkit
 
@@ -85,8 +96,9 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
     - tableQuery: {Model}::query() with necessary relationships
     - filters: { field: operator, ... }
     - tableSearchFields: [field1, field2]
-    - Blade uses <x-toolkit::data-table.*> components
+    - Blade uses <x-toolkit::data-table.*> components (thead/tbody/tr/th/td)
     - Columns: [list columns with sortField where applicable]
+    - Actions column with <x-toolkit::menu.*> dropdown
 
 ### Form component prompt template
 
@@ -97,6 +109,8 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
     - Use a Form Object at app/Livewire/Forms/{Model}Form.php
     - Render inside <x-toolkit::modal.large name="{action}-{entity}">
     - Use <x-toolkit::form> for the 12-column grid layout
+    - Use <x-toolkit::input.*> components for all form fields
+    - Use <x-toolkit::button.primary> and <x-toolkit::button.secondary> for actions
     - Listen for #[On('create-{entity}')] and #[On('edit-{entity}')]
     - On save: dispatch 'refresh-{entity}' and 'close-modal'
 
@@ -106,10 +120,9 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 
     use MarkusPayne\LivewireToolkit\Concerns\WithDataTable;
 
-    // In anonymous class:
     use WithDataTable;
 
-    public string $tableName = 'unique_name'; // Required — used for session persistence
+    public string $tableName = 'unique_name';
 
     public function tableQuery(): Builder
     {
@@ -129,23 +142,14 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 
 ### Provided Properties
 
-- `$sortBy` — current sort column (wire:model bound)
-- `$sortDir` — current sort direction (wire:model bound)
-- `$perPage` — current per-page count (wire:model bound)
-- `$perPageOptions` — array of per-page choices for the selector
+- `$sortBy`, `$sortDir`, `$perPage`, `$perPageOptions`
 
 ## WithSearch — Full Reference
 
-### Required alongside WithDataTable
-
-    use MarkusPayne\LivewireToolkit\Concerns\WithSearch;
-
-    // In anonymous class:
     use WithDataTable, WithSearch;
 
     public array $filters = [
         'name' => 'like',
-        'email' => 'like',
         'status' => '=',
         'role_id' => 'in',
         'tag_id' => 'pivot',
@@ -172,108 +176,54 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `hasIn` | `whereHas` + `whereIn` | Filter through relationship |
 | `pivot` | Pivot table filter | Many-to-many relationships |
 | `range` | `WHERE col BETWEEN` | Expects `[min, max]` |
-| Any SQL op | `WHERE col {op} val` | e.g. `>=`, `<`, `!=` |
 
 ## HasSelectOptionsTrait — Full Reference
 
-    use MarkusPayne\LivewireToolkit\Model\HasSelectOptionsTrait;
+Returns a plain array (not Collection). Cached with Redis tags, auto-flushed on save.
 
-    class Category extends Model
-    {
-        use HasSelectOptionsTrait;
-    }
-
-    // Basic — returns Collection keyed by id, valued by name
     $options = Category::getOptions();
-
-    // Custom value field
     $options = Category::getOptions(['value' => 'slug']);
-
-    // Active records only
     $options = Category::getOptions(['activeOnly' => true]);
-
-    // With filters
-    $options = Category::getOptions([
-        'filters' => [
-            ['field' => 'type', 'value' => 'team'],
-        ],
-    ]);
-
-## Modal — Full Reference
-
-### Large Modal
-
-    <x-toolkit::modal.large name="edit-athlete">
-        {{-- Content --}}
-    </x-toolkit::modal.large>
-
-Props:
-- `name` (string, default: `'large-modal'`) — event identifier for open/close
-- `title` (string, optional) — reserved for future header rendering
-
-Alpine events:
-
-    {{-- Open --}}
-    x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })"
-
-    {{-- Close by name --}}
-    x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })"
-
-    {{-- Close current (no name) --}}
-    x-on:click="$dispatch('close-modal')"
-
-The modal uses `@teleport('body')`, `x-trap.noscroll.inert`, and `x-cloak`.
-Max width is `sm:max-w-(--breakpoint-2xl)`. Backdrop is `bg-black/50`.
-
-## Form Grid — Full Reference
-
-    <x-toolkit::form>
-        {{-- Children use col-span-{n} classes --}}
-    </x-toolkit::form>
-
-Renders a `<form>` tag with `md:grid md:gap-6 md:grid-cols-12 items-start`.
-Attributes are merged, so you can add `wire:submit` etc:
-
-    <x-toolkit::form wire:submit="save">
-        ...
-    </x-toolkit::form>
+    $options = Category::getOptions(['cache' => false]);
 
 ## Modal Event Pattern
 
-    1. Parent blade dispatches event:
-       x-on:click="$dispatch('create-athlete')"
-       x-on:click="$dispatch('edit-athlete', { athleteId: {{ $athlete->id }} })"
+    1. Parent dispatches: x-on:click="$dispatch('edit-athlete', { athleteId: id })"
+    2. Component listens: #[On('edit-athlete')]
+    3. Component opens: $this->dispatch('open-modal', name: 'edit-athlete');
+    4. On save: $this->dispatch('refresh-athlete'); $this->dispatch('close-modal', name: 'edit-athlete');
+    5. IMPORTANT: x-on:click with $dispatch() — NEVER wire:click for dispatch-only
 
-    2. Form component listens:
-       #[On('create-athlete')]
-       #[On('edit-athlete')]
+## Menu Usage
 
-    3. Component opens modal:
-       $this->dispatch('open-modal', name: 'edit-athlete');
+    <x-toolkit::menu.index>
+        <x-toolkit::menu.button-actions />
+        <x-toolkit::menu.items>
+            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-model', { id: {{ $row->id }} })" />
+            <x-toolkit::menu.item-delete wire:click="delete({{ $row->id }})" />
+            <x-toolkit::menu.item-add x-on:click="$dispatch('create-child')">Add Child</x-toolkit::menu.item-add>
+            <x-toolkit::menu.item-download wire:click="export({{ $row->id }})" />
+        </x-toolkit::menu.items>
+    </x-toolkit::menu.index>
 
-    4. On successful save, form component dispatches:
-       $this->dispatch('refresh-athlete');
-       $this->dispatch('close-modal', name: 'edit-athlete');
-
-    5. IMPORTANT: Use x-on:click with $dispatch() — NEVER wire:click for dispatch-only
+Requires `@alpinejs/ui`. Shortcut items include icons and default labels.
 
 ## Common Mistakes to Prevent
 
-1. Missing `toolkit::` prefix — `<x-data-table.index>` won't resolve
+1. Missing `toolkit::` prefix — components won't resolve
 2. Missing `$tableName` — required for session key namespacing
-3. Custom sort/paginate logic — if WithDataTable is available, never write manual sort/paginate
+3. Custom sort/paginate logic — use WithDataTable, never manual
 4. Forms outside modals — all forms render inside `<x-toolkit::modal.large>`
 5. Class-based Livewire components — always MFC anonymous classes in ⚡ directories
 6. `wire:click` for dispatches — use `x-on:click="$dispatch(...)"` instead
-7. Skipping `applySearch()` — if WithSearch is used, the query MUST go through `$this->applySearch()`
-8. Using `<x-toolkit::form.grid>` — the correct component is `<x-toolkit::form>`
-9. Using `<x-close />` — inside toolkit views, always use `<x-toolkit::icon.close />`
-10. Using `data-table.*` for static tables — use `table.*` when you don't need
-    sorting or pagination (detail views, inline data, relation tables)
-11. Raw HTML inputs in forms — always use `<x-toolkit::input.*>` components
-12. Missing `<x-toolkit::input.group>` wrapper — provides label, error, and col-span sizing
-13. Forgetting JS dependencies — date needs flatpickr, signature needs SignaturePad
-14. Missing toolkit CSS import — add `@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);` to app.css
-15. Duplicating form element base styles — these come from the toolkit CSS, not the app
-16. Inline SVGs for common icons — use <x-toolkit::icon.*> components instead
-17. Using <x-toolkit::close /> — moved to <x-toolkit::icon.close />
+7. Skipping `applySearch()` — WithSearch queries MUST go through `$this->applySearch()`
+8. Using `<x-toolkit::form.grid>` — correct component is `<x-toolkit::form>`
+9. Using old data-table names — use `thead`/`tbody`/`tr`, not `header`/`body`/`row`
+10. Using `data-table.*` for static tables — use `table.*` instead
+11. Raw HTML inputs — use `<x-toolkit::input.*>` components
+12. Missing `<x-toolkit::input.group>` wrapper — provides label, error, col-span sizing
+13. Forgetting JS deps — date needs flatpickr, signature needs SignaturePad
+14. Missing toolkit CSS import in app.css
+15. Inline SVGs for common icons — use `<x-toolkit::icon.*>` instead
+16. Missing @alpinejs/ui for menus — x-menu directives require it
+17. `getOptions()` returns array not Collection — don't call `->pluck()` on result

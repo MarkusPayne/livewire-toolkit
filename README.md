@@ -1,22 +1,18 @@
 # Livewire Toolkit
 
-Reusable Livewire traits and Blade components for datatables, search, and model select options.
+Reusable Livewire traits and Blade components for datatables, search, forms, modals, menus, and model select options.
 
 ## Installation
 
-```bash
-composer require markuspayne/livewire-toolkit
-```
+    composer require markuspayne/livewire-toolkit
 
 Until this package is published on Packagist, add the GitHub repository to your `composer.json`:
 
-```json
-{
-    "repositories": [
-        { "type": "vcs", "url": "https://github.com/MarkusPayne/livewire-toolkit" }
-    ]
-}
-```
+    {
+        "repositories": [
+            { "type": "vcs", "url": "https://github.com/MarkusPayne/livewire-toolkit" }
+        ]
+    }
 
 ## Requirements
 
@@ -25,147 +21,124 @@ Until this package is published on Packagist, add the GitHub repository to your 
 - Livewire 4
 - Tailwind CSS (consuming project must provide)
 - Alpine.js (consuming project must provide)
+- @alpinejs/ui (for menu components and input.error)
+- @tailwindcss/forms (for toolkit CSS)
 
 ## CSS Setup
 
 The toolkit includes base styles for form inputs, checkboxes, radio buttons,
 and the flatpickr date picker. Import it in your `app.css`:
 
-```css
-@import 'tailwindcss';
-@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
+    @import 'tailwindcss';
+    @import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
 
-@plugin '@tailwindcss/forms';
-```
+    @plugin '@tailwindcss/forms';
 
 Import it **after** `@import 'tailwindcss'` and **before** your own styles.
 
 Alternatively, publish the CSS to customize it:
 
-```bash
-php artisan vendor:publish --tag=livewire-toolkit-css
-```
+    php artisan vendor:publish --tag=livewire-toolkit-css
 
-Then import the published copy instead:
+Then import the published copy:
 
-```css
-@import './vendor/toolkit.css' layer(base);
-```
-
-### Prerequisites
-
-The toolkit CSS builds on `@tailwindcss/forms`. Make sure your `app.css`
-includes `@plugin '@tailwindcss/forms'`.
+    @import './vendor/toolkit.css' layer(base);
 
 ### Custom Primary Color
 
-The toolkit uses `sky-*` as its default accent color (checkboxes, radio
-buttons, primary button). If your project defines a custom `--color-primary`
-in your `@theme` block, override the relevant classes by adding styles after
-the toolkit import or by publishing the CSS.
+The toolkit uses `sky-*` as its default accent color. If your project defines
+a custom `--color-primary` in your `@theme` block, publish the views and CSS
+to override.
 
 ## Usage
 
 ### WithDataTable
 
-```php
-use MarkusPayne\LivewireToolkit\Concerns\WithDataTable;
+    use MarkusPayne\LivewireToolkit\Concerns\WithDataTable;
 
-class UserList extends Component
-{
-    use WithDataTable;
-
-    public string $tableName = 'users';
-
-    public function tableQuery(): Builder
+    new class extends Component
     {
-        return User::query();
+        use WithDataTable;
+
+        public string $tableName = 'users';
+
+        public function tableQuery(): Builder
+        {
+            return User::query();
+        }
+
+        protected function tableDefaults(): array
+        {
+            return [
+                'sortBy' => 'name',
+                'sortDir' => 'ASC',
+                'perPage' => 25,
+            ];
+        }
     }
 
-    // Optional: override defaults
-    protected function tableDefaults(): array
-    {
-        return [
-            'sortBy' => 'name',
-            'sortDir' => 'ASC',
-            'perPage' => 25,
-        ];
-    }
-}
-```
+Blade:
 
-```blade
-<x-toolkit::data-table.index>
-    <x-toolkit::data-table.thead>
-        <x-toolkit::data-table.tr>
-            <x-toolkit::data-table.th sortField="name">Name</x-toolkit::data-table.th>
-            <x-toolkit::data-table.th sortField="email">Email</x-toolkit::data-table.th>
-            <x-toolkit::data-table.th>Actions</x-toolkit::data-table.th>
-        </x-toolkit::data-table.tr>
-    </x-toolkit::data-table.thead>
-
-    <x-toolkit::data-table.tbody>
-        @foreach ($this->rows as $row)
+    <x-toolkit::data-table.index>
+        <x-toolkit::data-table.thead>
             <x-toolkit::data-table.tr>
-                <x-toolkit::data-table.td>{{ $row->name }}</x-toolkit::data-table.td>
-                <x-toolkit::data-table.td>{{ $row->email }}</x-toolkit::data-table.td>
-                <x-toolkit::data-table.td>Actions here</x-toolkit::data-table.td>
+                <x-toolkit::data-table.th sortField="name">Name</x-toolkit::data-table.th>
+                <x-toolkit::data-table.th sortField="email">Email</x-toolkit::data-table.th>
+                <x-toolkit::data-table.th>Actions</x-toolkit::data-table.th>
             </x-toolkit::data-table.tr>
-        @endforeach
-    </x-toolkit::data-table.tbody>
-</x-toolkit::data-table.index>
-```
+        </x-toolkit::data-table.thead>
+
+        <x-toolkit::data-table.tbody>
+            @foreach ($this->rows as $row)
+                <x-toolkit::data-table.tr>
+                    <x-toolkit::data-table.td>{{ $row->name }}</x-toolkit::data-table.td>
+                    <x-toolkit::data-table.td>{{ $row->email }}</x-toolkit::data-table.td>
+                    <x-toolkit::data-table.td>
+                        <x-toolkit::menu.index>
+                            <x-toolkit::menu.button-dots />
+                            <x-toolkit::menu.items>
+                                <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-user', { userId: {{ $row->id }} })" />
+                                <x-toolkit::menu.item-delete wire:click="delete({{ $row->id }})" />
+                            </x-toolkit::menu.items>
+                        </x-toolkit::menu.index>
+                    </x-toolkit::data-table.td>
+                </x-toolkit::data-table.tr>
+            @endforeach
+        </x-toolkit::data-table.tbody>
+    </x-toolkit::data-table.index>
 
 ### Basic Table
 
-A simple table component set for static or lightweight tables that don't
-require sorting, pagination, or the `WithDataTable` trait.
+A simple table for static data — no sorting, pagination, or traits needed.
 
-```blade
-<x-toolkit::table.index>
-    <x-toolkit::table.thead>
-        <x-toolkit::table.tr>
-            <x-toolkit::table.th>Name</x-toolkit::table.th>
-            <x-toolkit::table.th>Value</x-toolkit::table.th>
-        </x-toolkit::table.tr>
-    </x-toolkit::table.thead>
-
-    <x-toolkit::table.tbody>
-        @foreach ($items as $item)
+    <x-toolkit::table.index>
+        <x-toolkit::table.thead>
             <x-toolkit::table.tr>
-                <x-toolkit::table.td>{{ $item->name }}</x-toolkit::table.td>
-                <x-toolkit::table.td>{{ $item->value }}</x-toolkit::table.td>
+                <x-toolkit::table.th>Name</x-toolkit::table.th>
+                <x-toolkit::table.th>Value</x-toolkit::table.th>
             </x-toolkit::table.tr>
-        @endforeach
-    </x-toolkit::table.tbody>
-</x-toolkit::table.index>
-```
+        </x-toolkit::table.thead>
 
-#### Differences from data-table
+        <x-toolkit::table.tbody>
+            @foreach ($items as $item)
+                <x-toolkit::table.tr>
+                    <x-toolkit::table.td>{{ $item->name }}</x-toolkit::table.td>
+                    <x-toolkit::table.td>{{ $item->value }}</x-toolkit::table.td>
+                </x-toolkit::table.tr>
+            @endforeach
+        </x-toolkit::table.tbody>
+    </x-toolkit::table.index>
 
 | Feature | `data-table.*` | `table.*` |
 |---------|---------------|-----------|
 | Sorting | Built-in via Alpine | None |
-| Pagination | Built-in per-page selector + links | None |
+| Pagination | Built-in | None |
 | WithDataTable trait | Required | Not needed |
-| Use case | Livewire list pages | Detail views, static tables, inline data |
-
-#### Row conditional styling
-
-```blade
-<x-toolkit::table.tr :hasError="$item->is_expired" :hasSuccess="$item->is_active">
-```
+| Use case | Livewire list pages | Detail views, static tables |
 
 ### WithSearch
 
-```php
-use MarkusPayne\LivewireToolkit\Concerns\WithSearch;
-
-class UserList extends Component
-{
     use WithDataTable, WithSearch;
-
-    public string $tableName = 'users';
 
     public array $filters = [
         'name' => 'like',
@@ -180,259 +153,156 @@ class UserList extends Component
     {
         return $this->applySearch(User::query());
     }
-}
-```
 
 Filter types: `like`, `match` (fulltext), `in`, `hasIn`, `pivot`, `range`, `=`, and any SQL operator.
 
 ### HasSelectOptionsTrait
 
-```php
-use MarkusPayne\LivewireToolkit\Model\HasSelectOptionsTrait;
+    use MarkusPayne\LivewireToolkit\Model\HasSelectOptionsTrait;
 
-class Sport extends Model
-{
-    use HasSelectOptionsTrait;
-}
+    class Sport extends Model
+    {
+        use HasSelectOptionsTrait;
+    }
 
-// Usage
-$options = Sport::getOptions(); // Collection keyed by id, valued by name
-$options = Sport::getOptions([
-    'value' => 'slug',
-    'activeOnly' => true,
-    'filters' => [
-        ['field' => 'type', 'value' => 'team'],
-    ],
-]);
-```
+    // Returns plain array keyed by id => name
+    $options = Sport::getOptions();
+    $options = Sport::getOptions([
+        'value' => 'slug',
+        'activeOnly' => true,
+        'filters' => [
+            ['field' => 'type', 'value' => 'team'],
+        ],
+    ]);
+
+Results are cached with Redis tags and auto-flushed on model save.
+Pass `'cache' => false` to bypass.
 
 ### Modal
 
-```blade
-<x-toolkit::modal.large name="edit-athlete" title="Edit Athlete">
-    {{-- Content here --}}
-</x-toolkit::modal.large>
-```
+    <x-toolkit::modal.large name="edit-athlete">
+        {{-- Content --}}
+    </x-toolkit::modal.large>
 
-Props:
-- `name` (string, default: `'large-modal'`) — used for event-based open/close
-- `title` (string, optional) — currently reserved, not rendered in header
+Props: `name` (string, default: `'large-modal'`), `title` (string, optional).
 
-Opening and closing:
+    {{-- Open --}}
+    <button x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })">Edit</button>
 
-```blade
-{{-- Open --}}
-<button x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })">Edit</button>
+    {{-- Close --}}
+    <button x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</button>
+    <button x-on:click="$dispatch('close-modal')">Cancel</button>
 
-{{-- Close from inside --}}
-<button x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</button>
+### Form
 
-{{-- Close without specifying name closes the current modal --}}
-<button x-on:click="$dispatch('close-modal')">Cancel</button>
-```
+    <x-toolkit::form wire:submit="save">
+        <x-toolkit::input.group label="First Name" for="form.firstName" :error="$errors->first('form.firstName')" size="6">
+            <x-toolkit::input.text wire:model="form.firstName" id="form.firstName" />
+        </x-toolkit::input.group>
+        <x-toolkit::input.group label="Last Name" for="form.lastName" :error="$errors->first('form.lastName')" size="6">
+            <x-toolkit::input.text wire:model="form.lastName" id="form.lastName" />
+        </x-toolkit::input.group>
+    </x-toolkit::form>
 
-### Form Grid
-
-```blade
-<x-toolkit::form>
-    {{-- 12-column grid with gap-6. Use <x-input.group size="6"> etc. --}}
-</x-toolkit::form>
-```
-
-The form component provides `md:grid md:gap-6 md:grid-cols-12 items-start`.
-Input group components from the consuming app use `col-span-{n}` to fill the grid.
+Provides `md:grid md:gap-6 md:grid-cols-12 items-start`. Input groups use `col-span-{n}` via the `size` prop.
 
 ### Icon Components
 
-Standalone SVG icons used by toolkit components and available for direct use.
+    <x-toolkit::icon.close />
+    <x-toolkit::icon.edit class="text-sky-600" />
+    <x-toolkit::icon.delete class="text-red-600" />
+    <x-toolkit::icon.add class="text-green-600" />
+    <x-toolkit::icon.download class="text-sky-600" />
+    <x-toolkit::icon.chevron-down />
+    <x-toolkit::icon.ellipsis />
 
-```blade
-<x-toolkit::icon.close />
-<x-toolkit::icon.edit class="text-sky-600" />
-<x-toolkit::icon.delete class="text-red-600" />
-<x-toolkit::icon.add class="text-green-600" />
-<x-toolkit::icon.download class="text-sky-600" />
-<x-toolkit::icon.chevron-down />
-<x-toolkit::icon.ellipsis />
-```
-
-All icons accept `$attributes` for class merging (size, color overrides).
-
-| Component | Description | Default size |
-|-----------|-------------|-------------|
-| `<x-toolkit::icon.close>` | X / close icon | h-5 w-5 |
-| `<x-toolkit::icon.edit>` | Pencil / edit icon | h-4 w-4 |
-| `<x-toolkit::icon.delete>` | Trash / delete icon | h-4 w-4 |
-| `<x-toolkit::icon.add>` | Plus / add icon | h-4 w-4 |
-| `<x-toolkit::icon.download>` | Download icon | h-4 w-4 |
-| `<x-toolkit::icon.chevron-down>` | Chevron down arrow | h-5 w-5 |
-| `<x-toolkit::icon.ellipsis>` | Horizontal dots | h-4 w-4 |
+All icons accept `$attributes` for class merging.
 
 ### Input Components
 
-Form input components for use inside `<x-toolkit::input.group>` wrappers.
-
-#### Group (stacked label)
-
-```blade
-<x-toolkit::input.group label="Email" for="form.email" :error="$errors->first('form.email')" size="6">
-    <x-toolkit::input.text wire:model="form.email" id="form.email" />
-</x-toolkit::input.group>
-```
-
-Props: `label`, `for`, `error`, `helpText`, `size` (1-12, default 6)
-
-#### Group Inline
-
-```blade
-<x-toolkit::input.group-inline label="Status" for="form.active" :error="$errors->first('form.active')" size="6">
-    <x-toolkit::input.toggle wire:model="form.active">Active</x-toolkit::input.toggle>
-</x-toolkit::input.group-inline>
-```
-
-Same props as group, but renders label and input side-by-side.
-
-#### Available Input Components
-
 | Component | Description |
 |-----------|-------------|
-| `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
-| `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
-| `<x-toolkit::input.error>` | Validation error message display |
+| `<x-toolkit::input.group>` | Form group — label, error, help text, `size` (1-12) |
+| `<x-toolkit::input.group-inline>` | Inline label/input layout |
+| `<x-toolkit::input.error>` | Validation error display |
 | `<x-toolkit::input.text>` | Text/number/email input |
-| `<x-toolkit::input.textarea>` | Textarea with configurable rows |
-| `<x-toolkit::input.select>` | Select dropdown with optional placeholder |
-| `<x-toolkit::input.checkbox>` | Checkbox input |
-| `<x-toolkit::input.radio>` | Radio button with label |
-| `<x-toolkit::input.toggle>` | Toggle/switch with label |
-| `<x-toolkit::input.money>` | Money input with $ prefix and USD suffix |
-| `<x-toolkit::input.yes-no>` | Yes/No option pair (use inside select) |
+| `<x-toolkit::input.textarea>` | Textarea with `rows` prop |
+| `<x-toolkit::input.select>` | Select with optional `placeholder` |
+| `<x-toolkit::input.checkbox>` | Checkbox |
+| `<x-toolkit::input.radio>` | Radio with `label` prop |
+| `<x-toolkit::input.toggle>` | Toggle switch |
+| `<x-toolkit::input.money>` | Money input ($, USD) |
+| `<x-toolkit::input.yes-no>` | Yes/No options (use inside select) |
 | `<x-toolkit::input.date>` | Date picker (requires flatpickr) |
-| `<x-toolkit::input.multi-select>` | Multi-select with tags (Alpine, self-contained) |
-| `<x-toolkit::input.signature>` | Signature pad (requires signature_pad) |
-| `<x-toolkit::input.file-upload>` | Drag-and-drop file upload with progress |
-| `<x-toolkit::input.check-all-rows>` | Select-all checkbox for data tables |
+| `<x-toolkit::input.multi-select>` | Multi-select with tags |
+| `<x-toolkit::input.signature>` | Signature pad (requires SignaturePad) |
+| `<x-toolkit::input.file-upload>` | Drag-and-drop file upload |
+| `<x-toolkit::input.check-all-rows>` | Select-all checkbox for tables |
 
 #### JavaScript Dependencies
 
-Some input components require third-party libraries loaded on `window` in
-the consuming app's `bootstrap.js`:
-
-| Component | Dependency | bootstrap.js |
-|-----------|-----------|-------------|
-| `date` | flatpickr | `window.flatpickr = flatpickr;` |
-| `signature` | signature_pad | `window.SignaturePad = SignaturePad;` |
-| `error` | @alpinejs/ui | Alpine plugin registered in app.js |
-
-#### CSS
-
-Import the toolkit CSS in your `app.css` for proper input styling:
-
-```css
-@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
-```
-
-See [CSS Setup](#css-setup) for details.
+| Component | Dependency | Setup |
+|-----------|-----------|-------|
+| `date` | flatpickr | `window.flatpickr = flatpickr;` in bootstrap.js |
+| `signature` | signature_pad | `window.SignaturePad = SignaturePad;` in bootstrap.js |
+| `error` | @alpinejs/ui | Alpine plugin in app.js |
+| `menu.*` | @alpinejs/ui | Alpine plugin in app.js |
 
 ### Button Components
 
-```blade
-<x-toolkit::button>Default</x-toolkit::button>
-<x-toolkit::button.primary>Save</x-toolkit::button.primary>
-<x-toolkit::button.secondary>Cancel</x-toolkit::button.secondary>
-<x-toolkit::button.danger>Delete</x-toolkit::button.danger>
-<x-toolkit::button.link>View Details</x-toolkit::button.link>
-```
+    <x-toolkit::button>Default</x-toolkit::button>
+    <x-toolkit::button.primary>Save</x-toolkit::button.primary>
+    <x-toolkit::button.secondary>Cancel</x-toolkit::button.secondary>
+    <x-toolkit::button.danger>Delete</x-toolkit::button.danger>
+    <x-toolkit::button.link>View Details</x-toolkit::button.link>
 
-All buttons support the `disabled` prop and have `wire:loading.attr="disabled"`
-built in (except `link` which is a plain styled button).
+All buttons include `wire:loading.attr="disabled"`. Colors use `sky-*` as default.
 
-| Component | Description |
-|-----------|-------------|
-| `<x-toolkit::button>` | Base button with border, focus ring, loading state |
-| `<x-toolkit::button.primary>` | Sky blue filled button |
-| `<x-toolkit::button.secondary>` | Gray outlined button with dark mode support |
-| `<x-toolkit::button.danger>` | Red filled button for destructive actions |
-| `<x-toolkit::button.link>` | Text-only button styled as a link |
+### Menu (Dropdown)
 
-Note: Button colors use `sky-*` as a generic default. If your project defines
-a custom `--color-primary` theme, publish the views and update the classes:
+Action menu built on Alpine UI's `x-menu` directive.
 
-```bash
-php artisan vendor:publish --tag=livewire-toolkit-views
-```
+    <x-toolkit::menu.index>
+        <x-toolkit::menu.button-actions />
 
-## Publishing Views
+        <x-toolkit::menu.items>
+            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-athlete', { athleteId: {{ $athlete->id }} })" />
+            <x-toolkit::menu.item-delete wire:click="delete({{ $athlete->id }})" />
+            <x-toolkit::menu.item-add x-on:click="$dispatch('create-result')">Add Result</x-toolkit::menu.item-add>
+            <x-toolkit::menu.item-download wire:click="export({{ $athlete->id }})" />
+        </x-toolkit::menu.items>
+    </x-toolkit::menu.index>
 
-To customize the blade components:
+Or with dots trigger:
 
-```bash
-php artisan vendor:publish --tag=livewire-toolkit-views
-```
-
-Views will be published to `resources/views/vendor/toolkit/`.
-
-## Claude Code Integration
-
-Publish the Claude Code rules file for AI-assisted development:
-
-```bash
-php artisan vendor:publish --tag=livewire-toolkit-claude-rules
-```
-
-This publishes `.claude/rules/livewire-toolkit.md` which teaches Claude Code
-how to correctly use the toolkit's traits and components.
-
-A SKILL.md reference file is also included at `stubs/claude/SKILL.md` for
-use with Claude.ai skills or Claude Code skill directories.
-
-## Available Components
+    <x-toolkit::menu.index>
+        <x-toolkit::menu.button-dots />
+        <x-toolkit::menu.items>
+            <x-toolkit::menu.item x-on:click="doSomething()">Custom Action</x-toolkit::menu.item>
+        </x-toolkit::menu.items>
+    </x-toolkit::menu.index>
 
 | Component | Description |
 |-----------|-------------|
-| `<x-toolkit::data-table.index>` | Table wrapper with per-page selector, pagination, optional export |
-| `<x-toolkit::data-table.thead>` | Table header with Alpine sort state |
-| `<x-toolkit::data-table.tbody>` | Table body wrapper |
-| `<x-toolkit::data-table.tr>` | Table row with conditional styling (error/warning/success/custom color) |
-| `<x-toolkit::data-table.th>` | Sortable table header cell |
-| `<x-toolkit::data-table.td>` | Table data cell |
-| `<x-toolkit::table.index>` | Simple table wrapper (no sort/pagination) |
-| `<x-toolkit::table.thead>` | Simple table header group (disables row hover) |
-| `<x-toolkit::table.header-group>` | Header group with configurable background |
-| `<x-toolkit::table.tbody>` | Simple table body wrapper |
-| `<x-toolkit::table.tr>` | Simple table row with conditional styling (`hasError`, `hasSuccess`, `textColor`) |
-| `<x-toolkit::table.th>` | Simple table header cell |
-| `<x-toolkit::table.td>` | Simple table data cell |
-| `<x-toolkit::modal.large>` | Large modal with backdrop, close button, event-driven open/close |
-| `<x-toolkit::form>` | 12-column CSS grid wrapper for form layouts |
-| `<x-toolkit::icon.close>` | X / close icon |
-| `<x-toolkit::icon.edit>` | Pencil / edit icon |
-| `<x-toolkit::icon.delete>` | Trash / delete icon |
-| `<x-toolkit::icon.add>` | Plus / add icon |
-| `<x-toolkit::icon.download>` | Download icon |
-| `<x-toolkit::icon.chevron-down>` | Chevron down arrow |
-| `<x-toolkit::icon.ellipsis>` | Horizontal dots |
-| `<x-toolkit::button>` | Base button with border, focus ring, loading state |
-| `<x-toolkit::button.primary>` | Sky blue filled button |
-| `<x-toolkit::button.secondary>` | Gray outlined button with dark mode support |
-| `<x-toolkit::button.danger>` | Red filled button for destructive actions |
-| `<x-toolkit::button.link>` | Text-only button styled as a link |
-| `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
-| `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
-| `<x-toolkit::input.error>` | Validation error message display |
-| `<x-toolkit::input.text>` | Text/number/email input |
-| `<x-toolkit::input.textarea>` | Textarea with configurable rows |
-| `<x-toolkit::input.select>` | Select dropdown with optional placeholder |
-| `<x-toolkit::input.checkbox>` | Checkbox input |
-| `<x-toolkit::input.radio>` | Radio button with label |
-| `<x-toolkit::input.toggle>` | Toggle/switch with label |
-| `<x-toolkit::input.money>` | Money input with $ prefix and USD suffix |
-| `<x-toolkit::input.yes-no>` | Yes/No option pair (use inside select) |
-| `<x-toolkit::input.date>` | Date picker (requires flatpickr) |
-| `<x-toolkit::input.multi-select>` | Multi-select with tags (Alpine, self-contained) |
-| `<x-toolkit::input.signature>` | Signature pad (requires signature_pad) |
-| `<x-toolkit::input.file-upload>` | Drag-and-drop file upload with progress |
-| `<x-toolkit::input.check-all-rows>` | Select-all checkbox for data tables |
+| `<x-toolkit::menu.index>` | Menu wrapper |
+| `<x-toolkit::menu.button>` | Base trigger |
+| `<x-toolkit::menu.button-actions>` | "Actions" trigger with chevron |
+| `<x-toolkit::menu.button-dots>` | Ellipsis trigger |
+| `<x-toolkit::menu.items>` | Dropdown panel |
+| `<x-toolkit::menu.item>` | Generic item |
+| `<x-toolkit::menu.item-edit>` | Edit with icon |
+| `<x-toolkit::menu.item-delete>` | Delete with icon + confirm |
+| `<x-toolkit::menu.item-add>` | Add with icon |
+| `<x-toolkit::menu.item-download>` | Download with icon |
+| `<x-toolkit::menu.close>` | Closes menu on click |
+
+Requires `@alpinejs/ui` plugin in consuming app's `app.js`.
+
+## Publishing
+
+    php artisan vendor:publish --tag=livewire-toolkit-views
+    php artisan vendor:publish --tag=livewire-toolkit-css
+    php artisan vendor:publish --tag=livewire-toolkit-claude-rules
 
 ## License
 

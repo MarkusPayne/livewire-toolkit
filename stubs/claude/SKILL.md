@@ -42,7 +42,13 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::table.td>` | Data cell |
 | `<x-toolkit::modal.large>` | Large modal with backdrop, event-driven open/close via Alpine |
 | `<x-toolkit::form>` | 12-column CSS grid form wrapper (`md:grid md:gap-6 md:grid-cols-12`) |
-| `<x-toolkit::close>` | Close/X SVG icon (used internally by modal, also standalone) |
+| `<x-toolkit::icon.close>` | X / close icon (used internally by modal, also standalone) |
+| `<x-toolkit::icon.edit>` | Pencil / edit icon |
+| `<x-toolkit::icon.delete>` | Trash / delete icon |
+| `<x-toolkit::icon.add>` | Plus / add icon |
+| `<x-toolkit::icon.download>` | Download icon |
+| `<x-toolkit::icon.chevron-down>` | Chevron down arrow |
+| `<x-toolkit::icon.ellipsis>` | Horizontal dots |
 | `<x-toolkit::input.group>` | Form group with stacked label, error, help text |
 | `<x-toolkit::input.group-inline>` | Inline form group (label and input side-by-side) |
 | `<x-toolkit::input.error>` | Validation error message (requires `$focus` from @alpinejs/ui) |
@@ -261,7 +267,7 @@ Attributes are merged, so you can add `wire:submit` etc:
 6. `wire:click` for dispatches — use `x-on:click="$dispatch(...)"` instead
 7. Skipping `applySearch()` — if WithSearch is used, the query MUST go through `$this->applySearch()`
 8. Using `<x-toolkit::form.grid>` — the correct component is `<x-toolkit::form>`
-9. Using `<x-close />` — inside toolkit views, always use `<x-toolkit::close />`
+9. Using `<x-close />` — inside toolkit views, always use `<x-toolkit::icon.close />`
 10. Using `data-table.*` for static tables — use `table.*` when you don't need
     sorting or pagination (detail views, inline data, relation tables)
 11. Raw HTML inputs in forms — always use `<x-toolkit::input.*>` components
@@ -269,3 +275,5 @@ Attributes are merged, so you can add `wire:submit` etc:
 13. Forgetting JS dependencies — date needs flatpickr, signature needs SignaturePad
 14. Missing toolkit CSS import — add `@import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);` to app.css
 15. Duplicating form element base styles — these come from the toolkit CSS, not the app
+16. Inline SVGs for common icons — use <x-toolkit::icon.*> components instead
+17. Using <x-toolkit::close /> — moved to <x-toolkit::icon.close />

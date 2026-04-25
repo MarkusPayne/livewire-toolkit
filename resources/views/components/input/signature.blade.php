@@ -2,7 +2,7 @@
     <div class="flex items-center justify-center pb-3">
         <button type="button" class="flex cursor-pointer items-center text-sm text-gray-700" x-on:click="clearSignature()">
             <span class="pr-2">Clear</span>
-            <x-toolkit::close />
+            <x-toolkit::icon.close />
         </button>
     </div>
     <div x-ref="canvasWrap" class="relative w-full" style="aspect-ratio: 2/1">

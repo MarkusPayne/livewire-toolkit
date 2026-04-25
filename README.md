@@ -242,14 +242,31 @@ Opening and closing:
 The form component provides `md:grid md:gap-6 md:grid-cols-12 items-start`.
 Input group components from the consuming app use `col-span-{n}` to fill the grid.
 
-### Close Icon
+### Icon Components
+
+Standalone SVG icons used by toolkit components and available for direct use.
 
 ```blade
-<x-toolkit::close />
+<x-toolkit::icon.close />
+<x-toolkit::icon.edit class="text-sky-600" />
+<x-toolkit::icon.delete class="text-red-600" />
+<x-toolkit::icon.add class="text-green-600" />
+<x-toolkit::icon.download class="text-sky-600" />
+<x-toolkit::icon.chevron-down />
+<x-toolkit::icon.ellipsis />
 ```
 
-A standalone close/X SVG icon. Used internally by the modal but also available
-for direct use.
+All icons accept `$attributes` for class merging (size, color overrides).
+
+| Component | Description | Default size |
+|-----------|-------------|-------------|
+| `<x-toolkit::icon.close>` | X / close icon | h-5 w-5 |
+| `<x-toolkit::icon.edit>` | Pencil / edit icon | h-4 w-4 |
+| `<x-toolkit::icon.delete>` | Trash / delete icon | h-4 w-4 |
+| `<x-toolkit::icon.add>` | Plus / add icon | h-4 w-4 |
+| `<x-toolkit::icon.download>` | Download icon | h-4 w-4 |
+| `<x-toolkit::icon.chevron-down>` | Chevron down arrow | h-5 w-5 |
+| `<x-toolkit::icon.ellipsis>` | Horizontal dots | h-4 w-4 |
 
 ### Input Components
 
@@ -388,7 +405,13 @@ use with Claude.ai skills or Claude Code skill directories.
 | `<x-toolkit::table.td>` | Simple table data cell |
 | `<x-toolkit::modal.large>` | Large modal with backdrop, close button, event-driven open/close |
 | `<x-toolkit::form>` | 12-column CSS grid wrapper for form layouts |
-| `<x-toolkit::close>` | Close/X SVG icon |
+| `<x-toolkit::icon.close>` | X / close icon |
+| `<x-toolkit::icon.edit>` | Pencil / edit icon |
+| `<x-toolkit::icon.delete>` | Trash / delete icon |
+| `<x-toolkit::icon.add>` | Plus / add icon |
+| `<x-toolkit::icon.download>` | Download icon |
+| `<x-toolkit::icon.chevron-down>` | Chevron down arrow |
+| `<x-toolkit::icon.ellipsis>` | Horizontal dots |
 | `<x-toolkit::button>` | Base button with border, focus ring, loading state |
 | `<x-toolkit::button.primary>` | Sky blue filled button |
 | `<x-toolkit::button.secondary>` | Gray outlined button with dark mode support |

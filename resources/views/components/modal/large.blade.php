@@ -24,7 +24,7 @@
                     <div class="absolute top-2 right-2 block pt-2 pr-2">
                         <span type="button" x-on:click="showModal = false" class="cursor-pointer rounded-xs bg-white text-red-500 hover:text-red-700">
                             <span class="sr-only">Close</span>
-                            <x-toolkit::close />
+                            <x-toolkit::icon.close />
                         </span>
                     </div>
                     <div class="overflow-y-auto px-4 pt-4">

@@ -27,7 +27,13 @@ All toolkit blade components use the `toolkit::` view namespace prefix:
 - `<x-toolkit::table.td>`
 - `<x-toolkit::modal.large>`
 - `<x-toolkit::form>`
-- `<x-toolkit::close>`
+- `<x-toolkit::icon.close>`
+- `<x-toolkit::icon.edit>`
+- `<x-toolkit::icon.delete>`
+- `<x-toolkit::icon.add>`
+- `<x-toolkit::icon.download>`
+- `<x-toolkit::icon.chevron-down>`
+- `<x-toolkit::icon.ellipsis>`
 - `<x-toolkit::input.group>`
 - `<x-toolkit::input.group-inline>`
 - `<x-toolkit::input.error>`
@@ -305,6 +311,16 @@ form grid.
     <x-toolkit::input.select wire:model="form.active">
         <x-toolkit::input.yes-no />
     </x-toolkit::input.select>
+
+## Icon Components
+
+Use `<x-toolkit::icon.*>` for consistent icons across the project:
+
+    <x-toolkit::icon.edit class="size-3 text-sky-600" />
+    <x-toolkit::icon.delete class="size-3 text-red-600" />
+
+All icons accept $attributes for class merging. Use these instead of
+inline SVGs or external icon packages.
 
 ## Button Components
 

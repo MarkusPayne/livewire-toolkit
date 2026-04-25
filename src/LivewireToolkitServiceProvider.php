@@ -22,6 +22,10 @@ final class LivewireToolkitServiceProvider extends ServiceProvider
             ], 'livewire-toolkit-claude-rules');
 
             $this->publishes([
+                __DIR__.'/../stubs/claude/rules/livewire-toolkit.md' => base_path('.claude/rules/livewire-toolkit.md'),
+            ], 'laravel-assets');
+
+            $this->publishes([
                 __DIR__.'/../resources/css/toolkit.css' => resource_path('css/vendor/toolkit.css'),
             ], 'livewire-toolkit-css');
         }

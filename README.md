@@ -298,6 +298,43 @@ Or with dots trigger:
 
 Requires `@alpinejs/ui` plugin in consuming app's `app.js`.
 
+### Sidebar
+
+Slide-over navigation sidebar with collapsible groups.
+
+    {{-- In your layout, add x-data with sidebarOpen state --}}
+    <div x-data="{ sidebarOpen: false }">
+        {{-- Toggle button (e.g. hamburger in header) --}}
+        <button x-on:click="sidebarOpen = true">Menu</button>
+
+        <x-toolkit::sidebar.index>
+            <x-slot:logo>
+                <x-toolkit::logo src="{{ asset('images/logo.png') }}" class="h-12! w-auto" />
+            </x-slot:logo>
+
+            <x-toolkit::sidebar.link href="{{ route('dashboard') }}">
+                <x-slot:icon><x-icons icon="browser" class="size-5" /></x-slot:icon>
+                Dashboard
+            </x-toolkit::sidebar.link>
+
+            <x-toolkit::sidebar.group label="Settings">
+                <x-slot:icon><x-icons icon="gear" class="size-5" /></x-slot:icon>
+
+                <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
+            </x-toolkit::sidebar.group>
+        </x-toolkit::sidebar.index>
+    </div>
+
+| Component | Description |
+|-----------|-------------|
+| `<x-toolkit::sidebar.index>` | Sidebar shell with slide-over animation, backdrop, close button |
+| `<x-toolkit::sidebar.group>` | Collapsible nav group with label and icon slot |
+| `<x-toolkit::sidebar.link>` | Nav link with active state detection and icon slot |
+| `<x-toolkit::logo>` | Logo image with fallback to app name text |
+
+The sidebar requires `sidebarOpen` Alpine state in a parent element.
+Icons are passed via named `$icon` slots — use your app's own icon components.
+
 ## Publishing
 
     php artisan vendor:publish --tag=livewire-toolkit-views

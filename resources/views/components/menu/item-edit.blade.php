@@ -1,10 +1,10 @@
-<x-menu.close>
-    <x-menu.item {{ $attributes }}>
-        <x-icons icon="pen-to-square" class="text-primary-600" {{ $attributes->whereStartsWith('class') }} />
+<x-toolkit::menu.close>
+    <x-toolkit::menu.item {{ $attributes }}>
+        <x-toolkit::icon.edit class="size-3 text-sky-600" />
         @if ($slot->isEmpty())
             Edit
         @else
             {{ $slot }}
         @endif
-    </x-menu.item>
-</x-menu.close>
+    </x-toolkit::menu.item>
+</x-toolkit::menu.close>

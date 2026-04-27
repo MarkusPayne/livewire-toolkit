@@ -1,10 +1,10 @@
-<x-menu.close>
-    <x-menu.item {{ $attributes }}>
-        <x-icons icon="folder-arrow-down" class="size-3! text-primary-600" />
+<x-toolkit::menu.close>
+    <x-toolkit::menu.item {{ $attributes }}>
+        <x-toolkit::icon.download class="size-3 text-sky-600" />
         @if ($slot->isEmpty())
             Download
         @else
             {{ $slot }}
         @endif
-    </x-menu.item>
-</x-menu.close>
+    </x-toolkit::menu.item>
+</x-toolkit::menu.close>

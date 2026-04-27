@@ -81,6 +81,10 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::menu.item-add>` | Add item with plus icon |
 | `<x-toolkit::menu.item-download>` | Download item with download icon |
 | `<x-toolkit::menu.close>` | Wrapper that closes menu on click |
+| `<x-toolkit::sidebar.index>` | Slide-over sidebar shell |
+| `<x-toolkit::sidebar.group>` | Collapsible nav group |
+| `<x-toolkit::sidebar.link>` | Nav link with active detection |
+| `<x-toolkit::logo>` | Logo image with text fallback |
 
 ## Generating Prompts That Use The Toolkit
 
@@ -208,6 +212,22 @@ Returns a plain array (not Collection). Cached with Redis tags, auto-flushed on 
 
 Requires `@alpinejs/ui`. Shortcut items include icons and default labels.
 
+## Sidebar Components
+
+    <x-toolkit::sidebar.index>
+        <x-slot:logo>
+            <x-toolkit::logo src="{{ asset('images/logo.png') }}" />
+        </x-slot:logo>
+
+        <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
+        <x-toolkit::sidebar.group label="Admin">
+            <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
+        </x-toolkit::sidebar.group>
+    </x-toolkit::sidebar.index>
+
+Requires `sidebarOpen` Alpine state in a parent element.
+Icons passed via named $icon slots — use your app's icon components.
+
 ## Common Mistakes to Prevent
 
 1. Missing `toolkit::` prefix — components won't resolve
@@ -227,3 +247,5 @@ Requires `@alpinejs/ui`. Shortcut items include icons and default labels.
 15. Inline SVGs for common icons — use `<x-toolkit::icon.*>` instead
 16. Missing @alpinejs/ui for menus — x-menu directives require it
 17. `getOptions()` returns array not Collection — don't call `->pluck()` on result
+18. Hardcoding routes in sidebar — sidebar.index is a shell, routes go in consuming app
+19. Using `<x-icons>` for sidebar icons — pass via named `$icon` slot instead

@@ -81,6 +81,12 @@ Menu (requires @alpinejs/ui):
 - `<x-toolkit::menu.item-download>`
 - `<x-toolkit::menu.close>`
 
+Sidebar:
+- `<x-toolkit::sidebar.index>`
+- `<x-toolkit::sidebar.group>`
+- `<x-toolkit::sidebar.link>`
+- `<x-toolkit::logo>`
+
 Never use unprefixed component names for toolkit components.
 
 ## CSS Setup
@@ -299,6 +305,22 @@ Use `<x-toolkit::menu.*>` for action dropdowns on table rows:
 Shortcut items (item-edit, item-delete, item-add, item-download) use
 `<x-toolkit::icon.*>` components and include default labels. Pass slot
 content to override the label. Requires `@alpinejs/ui` plugin.
+
+## Sidebar Components
+
+    <x-toolkit::sidebar.index>
+        <x-slot:logo>
+            <x-toolkit::logo src="{{ asset('images/logo.png') }}" />
+        </x-slot:logo>
+
+        <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
+        <x-toolkit::sidebar.group label="Admin">
+            <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
+        </x-toolkit::sidebar.group>
+    </x-toolkit::sidebar.index>
+
+Requires `sidebarOpen` Alpine state in a parent element.
+Icons passed via named $icon slots — use your app's icon components.
 
 ## Do NOT
 

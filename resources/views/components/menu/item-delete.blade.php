@@ -1,11 +1,11 @@
-<x-menu.close>
-    <x-menu.item wire:confirm.prompt="Are you sure?\n\nType DELETE to confirm|DELETE" {{ $attributes }}>
-        <x-icons icon="trash-can" class="size-3! text-red-600" />
+<x-toolkit::menu.close>
+    <x-toolkit::menu.item wire:confirm.prompt="Are you sure?\n\nType DELETE to confirm|DELETE" {{ $attributes }}>
+        <x-toolkit::icon.delete class="size-3 text-red-600" />
 
         @if ($slot->isEmpty())
             Delete
         @else
             {{ $slot }}
         @endif
-    </x-menu.item>
-</x-menu.close>
+    </x-toolkit::menu.item>
+</x-toolkit::menu.close>

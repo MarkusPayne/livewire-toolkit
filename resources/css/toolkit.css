@@ -3,6 +3,7 @@
  *
  * Import this file in your app.css:
  *   @import '../../vendor/markuspayne/livewire-toolkit/resources/css/toolkit.css' layer(base);
+ *   @import 'flatpickr/dist/flatpickr.css' layer(base);
  *
  * Requires: @tailwindcss/forms plugin in your app.css
  *

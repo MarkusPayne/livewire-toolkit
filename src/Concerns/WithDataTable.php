@@ -52,7 +52,7 @@ trait WithDataTable
             $defaults['sortDir'] ?? $this->sortDir,
         );
 
-        $this->perPage = Cache::get(
+        $this->perPage = (int) Cache::get(
             $this->tablePreferenceKey('perPage'),
             $defaults['perPage'] ?? $this->perPage,
         );

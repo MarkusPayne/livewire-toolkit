@@ -97,7 +97,8 @@ trait WithDataTable
 
     public function updatedPerPage(): void
     {
-        $this->persistTablePreference('perPage', $this->perPage);
+        $this->perPage = (int) $this->perPage;
+        $this->persistTablePreference('perPage', (int) $this->perPage);
         $this->resetPage();
         $this->refreshRows();
     }

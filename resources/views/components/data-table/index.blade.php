@@ -7,7 +7,7 @@
     <div class="flex items-center justify-between pb-2">
         <div>
             <select wire:model.change.live="perPage"
-                    class="border-gray-300 rounded-md shadow-sm text-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 m-w-20">
+                    class="border-gray-300 rounded-md shadow-sm text-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 min-w-24">
                 @foreach ($this->perPageOptions as $option)
                     <option value="{{ $option }}" wire:key="datatable-cnt-{{ $option }}">{{ $option }}</option>
                 @endforeach

@@ -15,8 +15,8 @@
             role="dialog"
             aria-modal="true"
             {{ $attributes }}
-            class="fixed inset-0 z-20 overflow-y-auto text-left">
-            <div x-transition:enter.opacity class="fixed inset-0 bg-black/50"></div>
+            class="fixed inset-0 z-70 overflow-y-auto text-left">
+            <div x-transition:enter.opacity class="fixed inset-0 bg-black/80"></div>
 
             <div class="flex min-h-screen items-center justify-center p-4 text-center sm:items-center sm:p-0">
                 {{-- overflow-hidden --}}

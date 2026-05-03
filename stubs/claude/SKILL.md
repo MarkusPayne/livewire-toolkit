@@ -81,10 +81,9 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::menu.item-add>` | Add item with plus icon |
 | `<x-toolkit::menu.item-download>` | Download item with download icon |
 | `<x-toolkit::menu.close>` | Wrapper that closes menu on click |
-| `<x-toolkit::sidebar.index>` | Slide-over sidebar shell |
+| `<x-toolkit::sidebar.index>` | Sidebar shell — `mode='slideover'` (drawer) or `mode='fixed'` (full page layout); `side='left'\|'right'` |
 | `<x-toolkit::sidebar.group>` | Collapsible nav group |
 | `<x-toolkit::sidebar.link>` | Nav link with active detection |
-| `<x-toolkit::layout.sidebar>` | Full page layout with persistent sidebar (desktop) and hamburger slide-over (mobile) |
 | `<x-toolkit::logo>` | Logo image with text fallback |
 
 ## Generating Prompts That Use The Toolkit
@@ -215,25 +214,39 @@ Requires `@alpinejs/ui`. Shortcut items include icons and default labels.
 
 ## Sidebar Components
 
+`<x-toolkit::sidebar.index>` has two modes selected by the `mode` prop:
+
+- `mode="slideover"` (default) — overlay drawer toggled by a hamburger
+- `mode="fixed"` — full page layout: persistent column at `lg:` + hamburger slide-over below
+
+`side="left"` (default) or `side="right"` controls slide direction and persistent column position.
+Defaults come from `config('livewire-toolkit.sidebar.*')`.
+
+### Slideover (drop-in)
+
+    {{-- Toggle from anywhere --}}
+    <button x-on:click="$dispatch('toolkit-sidebar-open')">Menu</button>
+
     <x-toolkit::sidebar.index>
         <x-slot:logo>
             <x-toolkit::logo src="{{ asset('images/logo.png') }}" />
         </x-slot:logo>
-
-        <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
-        <x-toolkit::sidebar.group label="Admin">
-            <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
-        </x-toolkit::sidebar.group>
+        <x-slot:nav>
+            <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
+            <x-toolkit::sidebar.group label="Admin">
+                <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
+            </x-toolkit::sidebar.group>
+        </x-slot:nav>
     </x-toolkit::sidebar.index>
 
-Requires `sidebarOpen` Alpine state in a parent element.
-Icons passed via named $icon slots — use your app's icon components.
+The component owns its own Alpine state. Open/close it by dispatching the
+window events `toolkit-sidebar-open` / `toolkit-sidebar-close`. `Escape`
+closes automatically. Do NOT add `x-data="{ sidebarOpen: false }"` on the
+consuming layout's `<body>` — that pattern is gone.
 
-## Sidebar Layout
+### Fixed (page layout)
 
-Use `<x-toolkit::layout.sidebar>` as the page layout for admin sections:
-
-    <x-toolkit::layout.sidebar title="Page Title">
+    <x-toolkit::sidebar.index mode="fixed" title="Page Title">
         <x-slot:logo>...</x-slot:logo>
         <x-slot:nav>
             <x-toolkit::sidebar.link href="...">...</x-toolkit::sidebar.link>
@@ -241,11 +254,15 @@ Use `<x-toolkit::layout.sidebar>` as the page layout for admin sections:
         </x-slot:nav>
         <x-slot:topbar>...</x-slot:topbar>
 
-        {{-- page content --}}
-    </x-toolkit::layout.sidebar>
+        {{-- page content (default slot) --}}
+    </x-toolkit::sidebar.index>
 
-Desktop: persistent left sidebar (w-72). Mobile: hamburger slide-over.
-Nav items use `<x-toolkit::sidebar.link>` and `<x-toolkit::sidebar.group>`.
+Desktop: persistent sidebar (w-72) on the chosen side. Mobile: hamburger
+in the topbar opens the slide-over. The `topbar` slot, `title` prop, and
+default slot (page content) are only rendered in fixed mode.
+
+Icons in nav items are passed via named `$icon` slots on
+`<x-toolkit::sidebar.link>` and `<x-toolkit::sidebar.group>`.
 
 ## Common Mistakes to Prevent
 
@@ -268,3 +285,5 @@ Nav items use `<x-toolkit::sidebar.link>` and `<x-toolkit::sidebar.group>`.
 17. `getOptions()` returns array not Collection — don't call `->pluck()` on result
 18. Hardcoding routes in sidebar — sidebar.index is a shell, routes go in consuming app
 19. Using `<x-icons>` for sidebar icons — pass via named `$icon` slot instead
+20. Adding `x-data="{ sidebarOpen: false }"` on `<body>` for the sidebar — the component owns its own state; dispatch `toolkit-sidebar-open` instead
+21. Using `<x-toolkit::layout.sidebar>` — that component was removed; use `<x-toolkit::sidebar.index mode="fixed">` instead

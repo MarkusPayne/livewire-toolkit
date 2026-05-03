@@ -307,56 +307,48 @@ Requires `@alpinejs/ui` plugin in consuming app's `app.js`.
 
 ### Sidebar
 
-Slide-over navigation sidebar with collapsible groups.
+`<x-toolkit::sidebar.index>` is a single component with two modes:
 
-    {{-- In your layout, add x-data with sidebarOpen state --}}
-    <div x-data="{ sidebarOpen: false }">
-        {{-- Toggle button (e.g. hamburger in header) --}}
-        <button x-on:click="sidebarOpen = true">Menu</button>
+- **`mode="slideover"`** (default) — overlay drawer toggled by a hamburger
+  somewhere in the consuming layout. The component owns its own Alpine state
+  and listens for window events.
+- **`mode="fixed"`** — a full page layout: persistent column at `lg:`,
+  hamburger slide-over below `lg:`. Renders the topbar, optional `title`,
+  and page content.
 
-        <x-toolkit::sidebar.index>
-            <x-slot:logo>
-                <x-toolkit::logo src="{{ asset('images/logo.png') }}" class="h-12! w-auto" />
-            </x-slot:logo>
+Both modes accept `side="left"` (default) or `side="right"` to control slide
+direction and the position of the persistent column.
 
-            <x-toolkit::sidebar.link href="{{ route('dashboard') }}">
-                <x-slot:icon><x-icons icon="browser" class="size-5" /></x-slot:icon>
-                Dashboard
-            </x-toolkit::sidebar.link>
+#### Slideover (drop-in)
 
+    {{-- Hamburger anywhere in your layout --}}
+    <button x-on:click="$dispatch('toolkit-sidebar-open')">Menu</button>
+
+    <x-toolkit::sidebar.index>
+        <x-slot:logo>
+            <x-toolkit::logo src="{{ asset('images/logo.png') }}" class="h-12! w-auto" />
+        </x-slot:logo>
+
+        <x-slot:nav>
+            <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
             <x-toolkit::sidebar.group label="Settings">
-                <x-slot:icon><x-icons icon="gear" class="size-5" /></x-slot:icon>
-
                 <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
             </x-toolkit::sidebar.group>
-        </x-toolkit::sidebar.index>
-    </div>
+        </x-slot:nav>
+    </x-toolkit::sidebar.index>
 
-| Component | Description |
-|-----------|-------------|
-| `<x-toolkit::sidebar.index>` | Sidebar shell with slide-over animation, backdrop, close button |
-| `<x-toolkit::sidebar.group>` | Collapsible nav group with label and icon slot |
-| `<x-toolkit::sidebar.link>` | Nav link with active state detection and icon slot |
-| `<x-toolkit::logo>` | Logo image with fallback to app name text |
+To open/close from anywhere, dispatch `toolkit-sidebar-open` or
+`toolkit-sidebar-close` as a window event. `Escape` closes automatically.
 
-The sidebar requires `sidebarOpen` Alpine state in a parent element.
-Icons are passed via named `$icon` slots — use your app's own icon components.
+#### Fixed page layout
 
-### Sidebar Layout
-
-A full page layout with persistent sidebar on desktop and hamburger
-slide-over on mobile.
-
-    <x-toolkit::layout.sidebar title="Dashboard">
+    <x-toolkit::sidebar.index mode="fixed" title="Dashboard">
         <x-slot:logo>
             <img src="{{ asset('images/logo.png') }}" class="h-8 w-auto" />
         </x-slot:logo>
 
         <x-slot:nav>
-            <x-toolkit::sidebar.link href="/dashboard">
-                <x-slot:icon>{{-- your icon here --}}</x-slot:icon>
-                Dashboard
-            </x-toolkit::sidebar.link>
+            <x-toolkit::sidebar.link href="/dashboard">Dashboard</x-toolkit::sidebar.link>
             <x-toolkit::sidebar.group label="Admin">
                 <x-toolkit::sidebar.link href="/users">Users</x-toolkit::sidebar.link>
             </x-toolkit::sidebar.group>
@@ -367,23 +359,42 @@ slide-over on mobile.
         </x-slot:topbar>
 
         {{-- Page content --}}
-    </x-toolkit::layout.sidebar>
+        {{ $slot }}
+    </x-toolkit::sidebar.index>
 
-| Slot | Description |
-|------|-------------|
+| Prop / Slot | Description |
+|-------------|-------------|
+| `mode` | `slideover` (default) or `fixed`. Falls back to `livewire-toolkit.sidebar.default_mode`. |
+| `side` | `left` (default) or `right`. Falls back to `livewire-toolkit.sidebar.default_side`. |
+| `title` | Optional `<h1>` above page content (fixed mode only) |
 | `$logo` | Logo image/markup in sidebar header |
-| `$nav` | Navigation items (sidebar.link, sidebar.group) |
-| `$topbar` | Top bar content (right side of header bar) |
-| `$slot` | Main page content |
+| `$nav` | Navigation items (`sidebar.link`, `sidebar.group`) |
+| `$topbar` | Top bar content (fixed mode only) |
+| `$slot` | Main page content (fixed mode only) |
 
-Props: `title` (optional — renders `<h1>` above content)
+| Component | Description |
+|-----------|-------------|
+| `<x-toolkit::sidebar.index>` | Sidebar shell (slideover or fixed) |
+| `<x-toolkit::sidebar.group>` | Collapsible nav group with label and icon slot |
+| `<x-toolkit::sidebar.link>` | Nav link with active state detection and icon slot |
+| `<x-toolkit::logo>` | Logo image with fallback to app name text |
 
-Behavior:
-- `>= lg` (1024px): Sidebar always visible, hamburger hidden
-- `< lg`: Sidebar hidden, hamburger in top bar opens slide-over
+#### Defaults
+
+Defaults live in `config/livewire-toolkit.php` and can be published with:
+
+    php artisan vendor:publish --tag=livewire-toolkit-config
+
+    return [
+        'sidebar' => [
+            'default_mode' => 'slideover',  // 'slideover' | 'fixed'
+            'default_side' => 'left',       // 'left' | 'right'
+        ],
+    ];
 
 ## Publishing
 
+    php artisan vendor:publish --tag=livewire-toolkit-config
     php artisan vendor:publish --tag=livewire-toolkit-views
     php artisan vendor:publish --tag=livewire-toolkit-css
     php artisan vendor:publish --tag=livewire-toolkit-claude-rules

@@ -8,11 +8,20 @@ use Illuminate\Support\ServiceProvider;
 
 final class LivewireToolkitServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__.'/../config/livewire-toolkit.php', 'livewire-toolkit');
+    }
+
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'toolkit');
 
         if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/livewire-toolkit.php' => config_path('livewire-toolkit.php'),
+            ], 'livewire-toolkit-config');
+
             $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/toolkit'),
             ], 'livewire-toolkit-views');

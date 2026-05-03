@@ -82,10 +82,9 @@ Menu (requires @alpinejs/ui):
 - `<x-toolkit::menu.close>`
 
 Sidebar:
-- `<x-toolkit::sidebar.index>`
+- `<x-toolkit::sidebar.index>` — modes: `slideover` (drawer) or `fixed` (full page); sides: `left` or `right`
 - `<x-toolkit::sidebar.group>`
 - `<x-toolkit::sidebar.link>`
-- `<x-toolkit::layout.sidebar>`
 - `<x-toolkit::logo>`
 
 Never use unprefixed component names for toolkit components.
@@ -309,25 +308,42 @@ content to override the label. Requires `@alpinejs/ui` plugin.
 
 ## Sidebar Components
 
+`<x-toolkit::sidebar.index>` is a single component with two modes.
+
+Props:
+- `mode` — `slideover` (default) or `fixed`. Falls back to `config('livewire-toolkit.sidebar.default_mode')`.
+- `side` — `left` (default) or `right`. Falls back to `config('livewire-toolkit.sidebar.default_side')`.
+- `title` — optional `<h1>` (fixed mode only).
+
+Slots:
+- `$logo`, `$nav` — used in both modes.
+- `$topbar`, `$slot` (page content) — fixed mode only.
+
+### Slideover (drop-in)
+
+    {{-- Toggle from anywhere --}}
+    <button x-on:click="$dispatch('toolkit-sidebar-open')">Menu</button>
+
     <x-toolkit::sidebar.index>
         <x-slot:logo>
             <x-toolkit::logo src="{{ asset('images/logo.png') }}" />
         </x-slot:logo>
-
-        <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
-        <x-toolkit::sidebar.group label="Admin">
-            <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
-        </x-toolkit::sidebar.group>
+        <x-slot:nav>
+            <x-toolkit::sidebar.link href="{{ route('dashboard') }}">Dashboard</x-toolkit::sidebar.link>
+            <x-toolkit::sidebar.group label="Admin">
+                <x-toolkit::sidebar.link href="{{ route('users.index') }}">Users</x-toolkit::sidebar.link>
+            </x-toolkit::sidebar.group>
+        </x-slot:nav>
     </x-toolkit::sidebar.index>
 
-Requires `sidebarOpen` Alpine state in a parent element.
-Icons passed via named $icon slots — use your app's icon components.
+The component owns its own Alpine state. Dispatch `toolkit-sidebar-open` /
+`toolkit-sidebar-close` as window events to control it. `Escape` closes
+automatically. Do NOT add `x-data="{ sidebarOpen: false }"` on the body —
+that pattern is gone.
 
-## Sidebar Layout
+### Fixed (page layout)
 
-Use `<x-toolkit::layout.sidebar>` as the page layout for admin sections:
-
-    <x-toolkit::layout.sidebar title="Page Title">
+    <x-toolkit::sidebar.index mode="fixed" title="Page Title">
         <x-slot:logo>...</x-slot:logo>
         <x-slot:nav>
             <x-toolkit::sidebar.link href="...">...</x-toolkit::sidebar.link>
@@ -336,10 +352,25 @@ Use `<x-toolkit::layout.sidebar>` as the page layout for admin sections:
         <x-slot:topbar>...</x-slot:topbar>
 
         {{-- page content --}}
-    </x-toolkit::layout.sidebar>
+    </x-toolkit::sidebar.index>
 
-Desktop: persistent left sidebar (w-72). Mobile: hamburger slide-over.
-Nav items use `<x-toolkit::sidebar.link>` and `<x-toolkit::sidebar.group>`.
+Desktop: persistent sidebar (w-72) on the chosen side. Mobile: hamburger in
+the topbar opens the slide-over.
+
+Icons in nav items are passed via named `$icon` slots.
+
+### Defaults
+
+Override via `config/livewire-toolkit.php`:
+
+    php artisan vendor:publish --tag=livewire-toolkit-config
+
+    return [
+        'sidebar' => [
+            'default_mode' => 'fixed',  // make every page use fixed by default
+            'default_side' => 'left',
+        ],
+    ];
 
 ## Do NOT
 

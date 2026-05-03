@@ -1,6 +1,7 @@
 @props([
     'href',
-    'icon' => null
+    'icon' => null,
+    'iconStyle' => null,
 ])
 <li
         x-data="{
@@ -13,13 +14,16 @@
         },
     }"
         x-on:livewire:navigated.window="if (hasActiveChild) active = true"
-        class="flex items-center gap-x-2 px-4 text-sm hover:text-sky-500">
-    @if ($icon)
-        <span class="flex items-center" :class="active && 'text-sky-700'">
+        {{ $attributes->merge(['class' => 'flex items-center gap-x-2 px-2 text-sm hover:text-primary-500 dark:hover:text-white']) }}
+>
+    <span class="flex items-center" :class="active && 'text-primary-600! dark:text-gray-200!'">
+           @if ($icon)
+            <span class="flex items-center" :class="active && 'text-sky-700'">
             {{ $icon }}
         </span>
-    @endif
-    <a href="{{ $href }}" wire:navigate class="flex items-center px-3 py-2 leading-5 text-gray-600 hover:text-sky-500">
+        @endif
+    </span>
+    <a href="{{ $href }}" wire:navigate class="flex items-center px-3 py-2 leading-5 dark:text-gray-200 text-gray-600 hover:text-primary-500 dark:hover:text-white" :class="active && 'text-primary-600! dark:text-gray-200!'">
         {{ $slot }}
     </a>
 </li>

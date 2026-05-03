@@ -32,6 +32,8 @@ Basic Table (static, no trait needed):
 
 Modal & Form:
 - `<x-toolkit::modal.large>`
+- `<x-toolkit::modal.medium>`
+- `<x-toolkit::modal.small>`
 - `<x-toolkit::form>`
 
 Icons:
@@ -222,27 +224,37 @@ For static or lightweight tables that don't need sorting or pagination:
 
 Use `table.*` for detail views, inline data. Use `data-table.*` for Livewire list pages.
 
-## Modal Component
+## Modal Components
+
+Three sizes available. All require a title slot:
 
     <x-toolkit::modal.large name="edit-athlete">
-        {{-- Content --}}
+        <x-slot:title>Edit Athlete</x-slot:title>
+        {{-- content --}}
+        <x-slot:footer>
+            <x-toolkit::button.secondary x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</x-toolkit::button.secondary>
+            <x-toolkit::button.primary wire:click="save">Save</x-toolkit::button.primary>
+        </x-slot:footer>
     </x-toolkit::modal.large>
 
-Props: `name` (string, default: `'large-modal'`), `title` (string, optional — reserved).
-
-    {{-- Open --}}
-    x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })"
-
-    {{-- Close --}}
-    x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })"
-    x-on:click="$dispatch('close-modal')"
+Size guide:
+- `modal.large` — wide forms, detail views, combine forms
+- `modal.medium` — standard add/edit forms
+- `modal.small` — confirmations, simple single-field forms
 
 ### Modal Event Pattern
 
 1. Blade dispatches: `$dispatch('edit-{model}', { modelId: id })`
 2. Component catches: `#[On('edit-{model}')]`
-3. On save, dispatch: `refresh-{model}` and `close-modal`
-4. Use `x-on:click` with `$dispatch()` — never `wire:click` for dispatch-only actions
+3. Component opens: `$this->dispatch('open-modal', name: 'edit-{model}');`
+4. On save: `$this->dispatch('refresh-{model}'); $this->dispatch('close-modal', name: 'edit-{model}');`
+5. Use `x-on:click` with `$dispatch()` — NEVER `wire:click` for dispatch-only actions
+
+### Choosing a modal size
+
+- Forms with 3+ columns or many fields → `modal.large`
+- Forms with 1-2 columns, standard CRUD → `modal.medium`
+- Single field, confirmation, simple dialog → `modal.small`
 
 ## Form Grid
 
@@ -379,7 +391,8 @@ Override via `config/livewire-toolkit.php`:
 - Hardcode per-page options — the trait provides `$perPageOptions`
 - Skip the `$tableName` property — it's required for session-based sort/filter persistence
 - Reference toolkit components without the `toolkit::` prefix
-- Place form content outside modals — all forms render inside `<x-toolkit::modal.large>`
+- Place form content outside modals — use `<x-toolkit::modal.large>`, `<x-toolkit::modal.medium>`, or `<x-toolkit::modal.small>`
+- Skip the title slot on modals — always provide `<x-slot:title>`
 - Use raw HTML form inputs — use `<x-toolkit::input.*>` components
 - Forget to wrap inputs in `<x-toolkit::input.group>` — provides error display and sizing
 - Use inline SVGs for common icons — use `<x-toolkit::icon.*>` instead

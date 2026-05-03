@@ -40,7 +40,9 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::table.tr>` | Row with conditional styling |
 | `<x-toolkit::table.th>` | Header cell (no sort) |
 | `<x-toolkit::table.td>` | Data cell |
-| `<x-toolkit::modal.large>` | Large modal with backdrop, event-driven open/close via Alpine |
+| `<x-toolkit::modal.large>` | Large modal (`--breakpoint-2xl`) — title slot, body, optional footer |
+| `<x-toolkit::modal.medium>` | Medium modal (`2xl`) — title slot, body, optional footer |
+| `<x-toolkit::modal.small>` | Small modal (`lg`) — title slot, body, optional footer |
 | `<x-toolkit::form>` | 12-column CSS grid form wrapper (`md:grid md:gap-6 md:grid-cols-12`) |
 | `<x-toolkit::icon.close>` | X / close icon |
 | `<x-toolkit::icon.edit>` | Pencil / edit icon |
@@ -111,7 +113,9 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 
     The component should:
     - Use a Form Object at app/Livewire/Forms/{Model}Form.php
-    - Render inside <x-toolkit::modal.large name="{action}-{entity}">
+    - Render inside <x-toolkit::modal.medium name="{action}-{entity}">
+    - Include <x-slot:title>{Action} {Entity}</x-slot:title>
+    - Include <x-slot:footer> with cancel and save buttons
     - Use <x-toolkit::form> for the 12-column grid layout
     - Use <x-toolkit::input.*> components for all form fields
     - Use <x-toolkit::button.primary> and <x-toolkit::button.secondary> for actions
@@ -269,7 +273,7 @@ Icons in nav items are passed via named `$icon` slots on
 1. Missing `toolkit::` prefix — components won't resolve
 2. Missing `$tableName` — required for session key namespacing
 3. Custom sort/paginate logic — use WithDataTable, never manual
-4. Forms outside modals — all forms render inside `<x-toolkit::modal.large>`
+4. Forms outside modals — all forms render inside `<x-toolkit::modal.large>`, `<x-toolkit::modal.medium>`, or `<x-toolkit::modal.small>`
 5. Class-based Livewire components — always MFC anonymous classes in ⚡ directories
 6. `wire:click` for dispatches — use `x-on:click="$dispatch(...)"` instead
 7. Skipping `applySearch()` — WithSearch queries MUST go through `$this->applySearch()`
@@ -287,3 +291,5 @@ Icons in nav items are passed via named `$icon` slots on
 19. Using `<x-icons>` for sidebar icons — pass via named `$icon` slot instead
 20. Adding `x-data="{ sidebarOpen: false }"` on `<body>` for the sidebar — the component owns its own state; dispatch `toolkit-sidebar-open` instead
 21. Using `<x-toolkit::layout.sidebar>` — that component was removed; use `<x-toolkit::sidebar.index mode="fixed">` instead
+22. Missing title slot on modals — always include `<x-slot:title>`
+23. Using `modal.large` for simple forms — use `modal.medium` or `modal.small`

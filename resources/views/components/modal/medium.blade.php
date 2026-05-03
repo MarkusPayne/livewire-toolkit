@@ -1,7 +1,7 @@
 @props([
-    'name' => 'large-modal',
+    'name' => 'medium-modal',
 ])
-<x-toolkit::modal.index :name="$name" maxWidth="sm:max-w-(--breakpoint-2xl)" {{ $attributes }}>
+<x-toolkit::modal.index :name="$name" maxWidth="sm:max-w-2xl" {{ $attributes }}>
     @if (isset($title))
         <x-slot:title>{{ $title }}</x-slot:title>
     @endif

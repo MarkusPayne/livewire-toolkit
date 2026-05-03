@@ -180,18 +180,53 @@ Pass `'cache' => false` to bypass.
 
 ### Modal
 
-    <x-toolkit::modal.large name="edit-athlete">
-        {{-- Content --}}
-    </x-toolkit::modal.large>
+Modals with title, close button, and optional footer. Three sizes available.
 
-Props: `name` (string, default: `'large-modal'`), `title` (string, optional).
+```blade
+{{-- Large (default) — wide forms, detail views --}}
+<x-toolkit::modal.large name="edit-athlete">
+    <x-slot:title>Edit Athlete</x-slot:title>
 
-    {{-- Open --}}
-    <button x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })">Edit</button>
+    <x-toolkit::form wire:submit="save">
+        {{-- form content --}}
+    </x-toolkit::form>
 
-    {{-- Close --}}
-    <button x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</button>
-    <button x-on:click="$dispatch('close-modal')">Cancel</button>
+    <x-slot:footer>
+        <x-toolkit::button.secondary x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</x-toolkit::button.secondary>
+        <x-toolkit::button.primary wire:click="save">Save</x-toolkit::button.primary>
+    </x-slot:footer>
+</x-toolkit::modal.large>
+
+{{-- Medium — standard forms --}}
+<x-toolkit::modal.medium name="add-metric">
+    <x-slot:title>Add Metric</x-slot:title>
+    {{-- content --}}
+</x-toolkit::modal.medium>
+
+{{-- Small — confirmations, simple forms --}}
+<x-toolkit::modal.small name="add-sport">
+    <x-slot:title>Add Sport</x-slot:title>
+    {{-- content --}}
+</x-toolkit::modal.small>
+```
+
+| Component | Max Width | Use Case |
+|-----------|-----------|----------|
+| `<x-toolkit::modal.large>` | `--breakpoint-2xl` | Wide forms, detail views, combine forms |
+| `<x-toolkit::modal.medium>` | `2xl` (42rem) | Standard forms, add/edit dialogs |
+| `<x-toolkit::modal.small>` | `lg` (32rem) | Confirmations, simple forms, add sport |
+
+Slots:
+- `$title` — Modal title rendered in header (required)
+- `$slot` — Body content
+- `$footer` — Optional footer (typically action buttons)
+
+Opening and closing:
+
+```blade
+<button x-on:click="$dispatch('open-modal', { name: 'edit-athlete' })">Edit</button>
+<button x-on:click="$dispatch('close-modal', { name: 'edit-athlete' })">Cancel</button>
+```
 
 ### Form
 

@@ -5,39 +5,39 @@
     {{-- Mobile slide-over sidebar --}}
     <div x-cloak x-show="sidebarOpen" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
         <div
-            x-show="sidebarOpen"
-            x-transition:enter="transition-opacity duration-300 ease-linear"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition-opacity duration-300 ease-linear"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-gray-900/80"
-            @click="sidebarOpen = false"></div>
+                x-show="sidebarOpen"
+                x-transition:enter="transition-opacity duration-300 ease-linear"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition-opacity duration-300 ease-linear"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                class="fixed inset-0 bg-gray-900/80"
+                @click="sidebarOpen = false"></div>
 
         <div class="fixed inset-0 flex">
             <div
-                x-show="sidebarOpen"
-                x-transition:enter="transform transition duration-300 ease-in-out"
-                x-transition:enter-start="-translate-x-full"
-                x-transition:enter-end="translate-x-0"
-                x-transition:leave="transform transition duration-300 ease-in-out"
-                x-transition:leave-start="translate-x-0"
-                x-transition:leave-end="-translate-x-full"
-                class="relative mr-16 flex w-full max-w-xs flex-1">
+                    x-show="sidebarOpen"
+                    x-transition:enter="transform transition duration-300 ease-in-out"
+                    x-transition:enter-start="-translate-x-full"
+                    x-transition:enter-end="translate-x-0"
+                    x-transition:leave="transform transition duration-300 ease-in-out"
+                    x-transition:leave-start="translate-x-0"
+                    x-transition:leave-end="-translate-x-full"
+                    class="relative mr-16 flex w-full max-w-xs flex-1">
                 {{-- Close button --}}
                 <div
-                    x-show="sidebarOpen"
-                    x-transition:enter="duration-300 ease-in-out"
-                    x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100"
-                    x-transition:leave="duration-300 ease-in-out"
-                    x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0"
-                    class="absolute top-0 left-full flex w-16 justify-center pt-5">
-                    <button type="button" x-on:click="sidebarOpen = false" class="-m-2.5 p-2.5">
+                        x-show="sidebarOpen"
+                        x-transition:enter="duration-300 ease-in-out"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="duration-300 ease-in-out"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="absolute top-0 left-full flex w-16 justify-center pt-3 pr-5 -ml-10">
+                    <button type="button" x-on:click="sidebarOpen = false" class="">
                         <span class="sr-only">Close sidebar</span>
-                        <x-toolkit::icon.close class="size-6 text-white" />
+                        <x-toolkit::icon.close class="size-6 " />
                     </button>
                 </div>
 

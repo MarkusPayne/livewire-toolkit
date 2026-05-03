@@ -75,7 +75,7 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::menu.button-actions>` | "Actions" trigger with chevron icon |
 | `<x-toolkit::menu.button-dots>` | Ellipsis dot trigger |
 | `<x-toolkit::menu.items>` | Dropdown panel with positioning |
-| `<x-toolkit::menu.item>` | Generic menu item |
+| `<x-toolkit::menu.item>` | Generic menu item — accepts optional `$icon` slot |
 | `<x-toolkit::menu.item-edit>` | Edit item with edit icon |
 | `<x-toolkit::menu.item-delete>` | Delete item with trash icon and confirm prompt |
 | `<x-toolkit::menu.item-add>` | Add item with plus icon |
@@ -84,6 +84,7 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 | `<x-toolkit::sidebar.index>` | Slide-over sidebar shell |
 | `<x-toolkit::sidebar.group>` | Collapsible nav group |
 | `<x-toolkit::sidebar.link>` | Nav link with active detection |
+| `<x-toolkit::layout.sidebar>` | Full page layout with persistent sidebar (desktop) and hamburger slide-over (mobile) |
 | `<x-toolkit::logo>` | Logo image with text fallback |
 
 ## Generating Prompts That Use The Toolkit
@@ -227,6 +228,24 @@ Requires `@alpinejs/ui`. Shortcut items include icons and default labels.
 
 Requires `sidebarOpen` Alpine state in a parent element.
 Icons passed via named $icon slots — use your app's icon components.
+
+## Sidebar Layout
+
+Use `<x-toolkit::layout.sidebar>` as the page layout for admin sections:
+
+    <x-toolkit::layout.sidebar title="Page Title">
+        <x-slot:logo>...</x-slot:logo>
+        <x-slot:nav>
+            <x-toolkit::sidebar.link href="...">...</x-toolkit::sidebar.link>
+            <x-toolkit::sidebar.group label="...">...</x-toolkit::sidebar.group>
+        </x-slot:nav>
+        <x-slot:topbar>...</x-slot:topbar>
+
+        {{-- page content --}}
+    </x-toolkit::layout.sidebar>
+
+Desktop: persistent left sidebar (w-72). Mobile: hamburger slide-over.
+Nav items use `<x-toolkit::sidebar.link>` and `<x-toolkit::sidebar.group>`.
 
 ## Common Mistakes to Prevent
 

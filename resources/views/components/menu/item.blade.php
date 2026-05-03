@@ -9,5 +9,6 @@
     class="flex items-center gap-2 w-full px-3 py-2 text-left text-sm hover:bg-slate-50 disabled:text-gray-500 transition-colors cursor-pointer"
     {{ $attributes }}
 >
+    {{ $icon ?? '' }}
     {{ $slot }}
 </button>

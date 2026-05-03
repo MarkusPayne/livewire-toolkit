@@ -85,6 +85,7 @@ Sidebar:
 - `<x-toolkit::sidebar.index>`
 - `<x-toolkit::sidebar.group>`
 - `<x-toolkit::sidebar.link>`
+- `<x-toolkit::layout.sidebar>`
 - `<x-toolkit::logo>`
 
 Never use unprefixed component names for toolkit components.
@@ -321,6 +322,24 @@ content to override the label. Requires `@alpinejs/ui` plugin.
 
 Requires `sidebarOpen` Alpine state in a parent element.
 Icons passed via named $icon slots — use your app's icon components.
+
+## Sidebar Layout
+
+Use `<x-toolkit::layout.sidebar>` as the page layout for admin sections:
+
+    <x-toolkit::layout.sidebar title="Page Title">
+        <x-slot:logo>...</x-slot:logo>
+        <x-slot:nav>
+            <x-toolkit::sidebar.link href="...">...</x-toolkit::sidebar.link>
+            <x-toolkit::sidebar.group label="...">...</x-toolkit::sidebar.group>
+        </x-slot:nav>
+        <x-slot:topbar>...</x-slot:topbar>
+
+        {{-- page content --}}
+    </x-toolkit::layout.sidebar>
+
+Desktop: persistent left sidebar (w-72). Mobile: hamburger slide-over.
+Nav items use `<x-toolkit::sidebar.link>` and `<x-toolkit::sidebar.group>`.
 
 ## Do NOT
 

@@ -282,6 +282,13 @@ Or with dots trigger:
         </x-toolkit::menu.items>
     </x-toolkit::menu.index>
 
+`<x-toolkit::menu.item>` accepts an optional `$icon` slot:
+
+    <x-toolkit::menu.item x-on:click="openSettings()">
+        <x-slot:icon><x-icons icon="gear" class="size-4" /></x-slot:icon>
+        Settings
+    </x-toolkit::menu.item>
+
 | Component | Description |
 |-----------|-------------|
 | `<x-toolkit::menu.index>` | Menu wrapper |
@@ -334,6 +341,46 @@ Slide-over navigation sidebar with collapsible groups.
 
 The sidebar requires `sidebarOpen` Alpine state in a parent element.
 Icons are passed via named `$icon` slots — use your app's own icon components.
+
+### Sidebar Layout
+
+A full page layout with persistent sidebar on desktop and hamburger
+slide-over on mobile.
+
+    <x-toolkit::layout.sidebar title="Dashboard">
+        <x-slot:logo>
+            <img src="{{ asset('images/logo.png') }}" class="h-8 w-auto" />
+        </x-slot:logo>
+
+        <x-slot:nav>
+            <x-toolkit::sidebar.link href="/dashboard">
+                <x-slot:icon>{{-- your icon here --}}</x-slot:icon>
+                Dashboard
+            </x-toolkit::sidebar.link>
+            <x-toolkit::sidebar.group label="Admin">
+                <x-toolkit::sidebar.link href="/users">Users</x-toolkit::sidebar.link>
+            </x-toolkit::sidebar.group>
+        </x-slot:nav>
+
+        <x-slot:topbar>
+            {{-- Top bar content (search, profile, etc) --}}
+        </x-slot:topbar>
+
+        {{-- Page content --}}
+    </x-toolkit::layout.sidebar>
+
+| Slot | Description |
+|------|-------------|
+| `$logo` | Logo image/markup in sidebar header |
+| `$nav` | Navigation items (sidebar.link, sidebar.group) |
+| `$topbar` | Top bar content (right side of header bar) |
+| `$slot` | Main page content |
+
+Props: `title` (optional — renders `<h1>` above content)
+
+Behavior:
+- `>= lg` (1024px): Sidebar always visible, hamburger hidden
+- `< lg`: Sidebar hidden, hamburger in top bar opens slide-over
 
 ## Publishing
 

@@ -1,12 +1,17 @@
-<div class="mt-1 relative rounded-md shadow-xs">
-    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<div class="flex items-center">
+
         <span class="text-gray-500 sm:text-sm sm:leading-5">
             $
         </span>
-    </div>
 
-    <input {{ $attributes }} class="form-input block w-full pl-7 pr-12 sm:text-sm sm:leading-5" placeholder="0.00"
-        aria-describedby="price-currency">
+
+    <div class=" grow ">
+        <input
+                id="{{ $for }}"
+                type="{{ $type }}"
+                autocomplete="off"
+                {{ $attributes->merge(['class' => 'flex-1 transition duration-150 ease-in-out dark:bg-gray-700 dark:text-gray-100']) }} />
+    </div>
 
 
 </div>

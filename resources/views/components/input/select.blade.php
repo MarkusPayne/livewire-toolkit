@@ -4,7 +4,7 @@
 ])
 @aware(['for'])
 
-<select id="{{ $for }}" {{ $attributes->merge(['class' => 'pr-8 ']) }}>
+<select id="{{ $for }}" {{ $attributes->merge(['class' => 'pr-8 rounded-sm ']) }}>
     @if ($placeholder)
         <option value="">-- {{ $placeholder }} --</option>
     @else

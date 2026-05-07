@@ -23,7 +23,7 @@
     };
 @endphp
 
-<div {{ $attributes->merge(["class" => "col-span-12 " . $colSpan]) }}>
+<div {{ $attributes->merge(["class" => "col-span-12 pt-2 " . $colSpan]) }}>
     @if ($label)
         <label
             @if ($for)

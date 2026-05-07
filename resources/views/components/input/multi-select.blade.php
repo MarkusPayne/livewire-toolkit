@@ -5,7 +5,7 @@
 
 <div class="relative w-full" x-data="multiselect(@js($options))" x-modelable="current" x-on:click.outside="open = false" x-on:keydown.escape.window="open = false" {{ $attributes }}>
     <div
-        class="flex min-h-10 cursor-pointer items-center rounded-md border border-gray-300"
+        class="flex min-h-10 cursor-pointer items-center rounded-sm border border-gray-300"
         x-on:click="toggle()"
         x-on:keydown.enter.prevent="toggle()"
         x-on:keydown.space.prevent="toggle()"
@@ -20,7 +20,7 @@
             </template>
 
             <template x-for="selectedId in current" :key="selectedId">
-                <span class="inline-flex items-center gap-1 rounded-md border border-gray-300 py-0.5 pr-1 pl-2 text-sm">
+                <span class="inline-flex items-center gap-1 rounded-sm border border-gray-300 py-0.5 pr-1 pl-2 text-sm">
                     <span x-text="options[selectedId]"></span>
                     <button type="button" class="cursor-pointer text-red-500 hover:text-red-700" x-on:click.stop="remove(selectedId)" :aria-label="'Remove ' + options[selectedId]">&times;</button>
                 </span>
@@ -41,7 +41,7 @@
         x-show="open"
         x-cloak
         x-transition.origin.top
-        class="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-md border border-gray-300 bg-white shadow-sm"
+        class="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-sm border border-gray-300 bg-white shadow-sm"
         role="listbox"
         aria-multiselectable="true"
         x-on:keydown.arrow-down.prevent="focusNext()"

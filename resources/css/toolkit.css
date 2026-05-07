@@ -27,7 +27,7 @@
     [multiple],
     textarea,
     select {
-        @apply inline-block w-full rounded-xs border-gray-300 p-2 text-sm text-gray-600 focus:ring-0 dark:text-gray-200;
+        @apply inline-block w-full rounded-sm border-gray-300 p-2 text-sm text-gray-600 focus:ring-0 dark:text-gray-200;
     }
 
     [type='checkbox'] {
@@ -36,12 +36,12 @@
 
     [type='radio']:focus,
     [type='checkbox']:focus {
-        @apply rounded-xs border-gray-300 text-sky-600 focus:ring-0 dark:text-gray-200;
+        @apply rounded-sm border-gray-300 text-sky-600 focus:ring-0 dark:text-gray-200;
     }
 
     [type='radio']:checked,
     [type='checkbox']:checked {
-        @apply rounded-xs border-gray-300 text-sky-600 focus:ring-0 dark:text-gray-200;
+        @apply rounded-sm border-gray-300 text-sky-600 focus:ring-0 dark:text-gray-200;
     }
 
     label > span {

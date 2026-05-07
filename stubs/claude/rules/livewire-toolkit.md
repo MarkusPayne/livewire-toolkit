@@ -254,7 +254,7 @@ Size guide:
 
 - Forms with 3+ columns or many fields, or nested sections → `modal.large`
 - Forms with 1-2 columns, standard CRUD (2–10 fields) → `modal.medium`
-- Preview modals (read-only display of a record) → `modal.medium`
+- Preview modals (read-only display of a record) → `modal.large`
 - Single field, confirmation, simple dialog → `modal.small`
 
 ## Form Grid

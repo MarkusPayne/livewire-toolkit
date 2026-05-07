@@ -19,7 +19,7 @@
             <div x-transition:enter.opacity class="fixed inset-0 bg-black/80"></div>
 
             <div class="flex min-h-screen items-center justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="relative my-8 w-full rounded-xs bg-white pt-5 text-left shadow-xl sm:mx-4 {{ $maxWidth }} sm:px-4 sm:py-6" x-trap.noscroll.inert="showModal">
+                <div class="relative my-5 w-full rounded-xs bg-white text-left shadow-xl sm:mx-4 {{ $maxWidth }} sm:px-4 py-5" x-trap.noscroll.inert="showModal">
                     <div class="flex items-center justify-between px-4 pb-4">
                         <h3 class="text-lg font-semibold text-gray-900">
                             {{ $title ?? '' }}

@@ -113,7 +113,9 @@ This skill tells Claude how to correctly use the `markuspayne/livewire-toolkit` 
 
     The component should:
     - Use a Form Object at app/Livewire/Forms/{Model}Form.php
-    - Render inside <x-toolkit::modal.medium name="{action}-{entity}">
+    - Render inside <x-toolkit::modal.large name="{action}-{entity}">
+      (default to modal.large for all forms; modal.medium and modal.small are
+      available but only use them when explicitly instructed)
     - Include <x-slot:title>{Action} {Entity}</x-slot:title>
     - Include <x-slot:footer> with cancel and save buttons
     - Use <x-toolkit::form> for the 12-column grid layout
@@ -273,7 +275,7 @@ Icons in nav items are passed via named `$icon` slots on
 1. Missing `toolkit::` prefix — components won't resolve
 2. Missing `$tableName` — required for session key namespacing
 3. Custom sort/paginate logic — use WithDataTable, never manual
-4. Forms outside modals — all forms render inside `<x-toolkit::modal.large>`, `<x-toolkit::modal.medium>`, or `<x-toolkit::modal.small>`
+4. Forms outside modals — all forms render inside `<x-toolkit::modal.large>` (the default; only use `modal.medium` or `modal.small` when explicitly instructed)
 5. Class-based Livewire components — always MFC anonymous classes in ⚡ directories
 6. `wire:click` for dispatches — use `x-on:click="$dispatch(...)"` instead
 7. Skipping `applySearch()` — WithSearch queries MUST go through `$this->applySearch()`
@@ -292,4 +294,4 @@ Icons in nav items are passed via named `$icon` slots on
 20. Adding `x-data="{ sidebarOpen: false }"` on `<body>` for the sidebar — the component owns its own state; dispatch `toolkit-sidebar-open` instead
 21. Using `<x-toolkit::layout.sidebar>` — that component was removed; use `<x-toolkit::sidebar.index mode="fixed">` instead
 22. Missing title slot on modals — always include `<x-slot:title>`
-23. Using `modal.large` for simple forms — use `modal.medium` or `modal.small`
+23. Downgrading a form, preview, or detail modal to `modal.medium` or `modal.small` without being explicitly instructed — `modal.large` is the default for everything; the smaller sizes are available but only used on explicit request (typical exception: confirmation dialogs)

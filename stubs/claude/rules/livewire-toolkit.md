@@ -226,7 +226,16 @@ Use `table.*` for detail views, inline data. Use `data-table.*` for Livewire lis
 
 ## Modal Components
 
-Three sizes available. All require a title slot:
+**Default to `<x-toolkit::modal.large>` for every modal unless explicitly
+instructed otherwise.** Size consistency across the app matters more than
+micro-optimizing each modal's width — users learn one size for previews,
+forms, and detail views and stop re-orienting between screens.
+
+`<x-toolkit::modal.medium>` and `<x-toolkit::modal.small>` exist and are
+available, but only use them when the task explicitly calls for a smaller
+size. Don't downgrade a form to medium "because it's simple" — use large.
+
+All sizes require a title slot:
 
     <x-toolkit::modal.large name="edit-athlete">
         <x-slot:title>Edit Athlete</x-slot:title>
@@ -237,10 +246,11 @@ Three sizes available. All require a title slot:
         </x-slot:footer>
     </x-toolkit::modal.large>
 
-Size guide:
-- `modal.large` — wide forms, detail views, combine forms
-- `modal.medium` — standard add/edit forms
-- `modal.small` — confirmations, simple single-field forms
+Size availability:
+- `modal.large` — **default for everything** (forms, previews, detail views)
+- `modal.medium` — available; use only when explicitly requested
+- `modal.small` — available; use only when explicitly requested (typical
+  cases: confirmation dialogs, single-question prompts)
 
 ### Modal Event Pattern
 
@@ -252,10 +262,14 @@ Size guide:
 
 ### Choosing a modal size
 
-- Forms with 3+ columns or many fields, or nested sections → `modal.large`
-- Forms with 1-2 columns, standard CRUD (2–10 fields) → `modal.medium`
-- Preview modals (read-only display of a record) → `modal.large`
-- Single field, confirmation, simple dialog → `modal.small`
+Default to `modal.large`. The other sizes are only used when explicitly
+instructed:
+
+- Any form, preview, or detail modal → `modal.large` (default — always use
+  this unless told otherwise)
+- `modal.medium` and `modal.small` — available, but only when the task
+  explicitly says "use a small/medium modal" or describes a confirmation
+  dialog
 
 ## Form Grid
 
@@ -392,7 +406,8 @@ Override via `config/livewire-toolkit.php`:
 - Hardcode per-page options — the trait provides `$perPageOptions`
 - Skip the `$tableName` property — it's required for session-based sort/filter persistence
 - Reference toolkit components without the `toolkit::` prefix
-- Place form content outside modals — use `<x-toolkit::modal.large>`, `<x-toolkit::modal.medium>`, or `<x-toolkit::modal.small>`
+- Place form content outside modals — wrap forms in `<x-toolkit::modal.large>` (the default modal size for forms, previews, and detail views)
+- Downgrade a modal to `modal.medium` or `modal.small` without being explicitly instructed to — default to `modal.large` for everything
 - Skip the title slot on modals — always provide `<x-slot:title>`
 - Use raw HTML form inputs — use `<x-toolkit::input.*>` components
 - Forget to wrap inputs in `<x-toolkit::input.group>` — provides error display and sizing

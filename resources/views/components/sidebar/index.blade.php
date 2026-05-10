@@ -45,7 +45,7 @@
                 x-transition:leave-start="translate-x-0"
                 x-transition:leave-end="{{ $closedTransform }}"
                 class="relative flex w-full max-w-96 flex-1">
-                <div class="relative flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
+                <div class="relative flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 dark:bg-slate-800">
                     <div class="relative flex h-16 shrink-0 items-center justify-between pt-5">
                         {{ $logo ?? '' }}
                         <button type="button" x-on:click="open = false">
@@ -93,7 +93,7 @@
                     x-transition:leave-start="translate-x-0"
                     x-transition:leave-end="{{ $closedTransform }}"
                     class="relative flex w-full max-w-xs flex-1">
-                    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
+                    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ark:bg-slate-800">
                         <div class="relative flex h-16 shrink-0 items-center justify-between">
                             {{ $logo ?? '' }}
                             <button type="button" x-on:click="open = false">
@@ -112,7 +112,7 @@
         </div>
 
         {{-- Desktop persistent column --}}
-        <div class="hidden lg:fixed lg:inset-y-0 {{ $desktopSide }} lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div class="hidden lg:fixed lg:inset-y-0 {{ $desktopSide }} lg:z-50 lg:flex lg:w-72 lg:flex-col dark:bg-slate-800">
             <div class="flex grow flex-col gap-y-5 overflow-y-auto {{ $desktopBorder }} border-gray-200 bg-white px-6 pb-4">
                 <div class="flex h-16 shrink-0 items-center">
                     {{ $logo ?? '' }}
@@ -127,7 +127,7 @@
 
         {{-- Main content area --}}
         <div class="{{ $contentPad }}">
-            <div class="sticky top-0 z-40 flex flex-row-reverse h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+            <div class="sticky top-0 z-40 flex flex-row-reverse h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:bg-slate-800">
                 <button type="button" x-on:click="open = true" class="-m-2.5 p-2.5 text-gray-700 lg:hidden">
                     <span class="sr-only">Open sidebar</span>
                     <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

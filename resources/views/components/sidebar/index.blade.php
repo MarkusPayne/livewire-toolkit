@@ -55,7 +55,7 @@
                     </div>
 
                     <nav class="relative flex flex-1 flex-col">
-                        <ul role="list" class="flex flex-1 flex-col gap-y-1 font-normal text-gray-600">
+                        <ul role="list" class="flex flex-1 flex-col gap-y-1 font-normal text-gray-600 dark:text-slate-400">
                             {{ $nav ?? $slot }}
                         </ul>
                     </nav>
@@ -102,7 +102,7 @@
                             </button>
                         </div>
                         <nav class="flex flex-1 flex-col">
-                            <ul role="list" class="flex flex-1 flex-col gap-y-1 font-normal text-gray-600">
+                            <ul role="list" class="flex flex-1 flex-col gap-y-1 font-normal text-gray-600 dark:text-slate-400">
                                 {{ $nav ?? '' }}
                             </ul>
                         </nav>
@@ -113,12 +113,12 @@
 
         {{-- Desktop persistent column --}}
         <div class="hidden lg:fixed lg:inset-y-0 {{ $desktopSide }} lg:z-50 lg:flex lg:w-72 lg:flex-col">
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto {{ $desktopBorder }} border-gray-200 bg-white px-6 pb-4  dark:bg-slate-800">
+            <div class="flex grow flex-col gap-y-5 overflow-y-auto {{ $desktopBorder }} border-gray-200 bg-white px-6 pb-4 dark:bg-slate-800 dark:border-slate-800">
                 <div class="flex h-16 shrink-0 items-center">
                     {{ $logo ?? '' }}
                 </div>
                 <nav class="flex flex-1 flex-col">
-                    <ul role="list" class="flex flex-1 flex-col gap-y-1 font-normal text-gray-600">
+                    <ul role="list" class="flex flex-1 flex-col gap-y-1 font-normal text-gray-600 dark:text-slate-400">
                         {{ $nav ?? '' }}
                     </ul>
                 </nav>
@@ -127,14 +127,14 @@
 
         {{-- Main content area --}}
         <div class="{{ $contentPad }}">
-            <div class="sticky top-0 z-40 flex flex-row-reverse h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:bg-slate-800">
-                <button type="button" x-on:click="open = true" class="-m-2.5 p-2.5 text-gray-700 lg:hidden">
+            <div class="sticky top-0 z-40 flex flex-row-reverse h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 dark:bg-slate-800 dark:border-slate-800">
+                <button type="button" x-on:click="open = true" class="-m-2.5 p-2.5 text-gray-700 dark:text-slate-200 lg:hidden">
                     <span class="sr-only">Open sidebar</span>
                     <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
-                <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
+                <div class="h-6 w-px bg-gray-200 dark:bg-slate-800 lg:hidden" aria-hidden="true"></div>
                 <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
                     {{ $topbar ?? '' }}
                 </div>
@@ -143,7 +143,7 @@
             <main class="py-10">
                 <div class="px-4 sm:px-6 lg:px-8">
                     @if ($title)
-                        <h1 class="pb-6 text-2xl font-semibold text-gray-900">{{ $title }}</h1>
+                        <h1 class="pb-6 text-2xl font-semibold text-gray-900 dark:text-slate-50">{{ $title }}</h1>
                     @endif
                     {{ $slot }}
                 </div>

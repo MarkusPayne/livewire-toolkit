@@ -14,7 +14,7 @@
     }"
         x-on:livewire:navigated.window="open = hasActiveChild"
         {{ $attributes->merge(['class' => '']) }}>
-    <div @click="open = !open" class="flex w-full cursor-pointer items-center justify-between rounded-lg bg-white px-4 py-2" :class="hasActiveChild && 'bg-gray-100 font-semibold'">
+    <div @click="open = !open" class="flex w-full cursor-pointer items-center justify-between rounded-lg bg-white px-4 py-2 dark:bg-slate-900" :class="hasActiveChild && 'bg-gray-100 font-semibold dark:bg-slate-700 dark:text-slate-50'">
         <span class="flex items-center gap-x-2" :class="open && 'font-semibold!'">
             {{ $icon ?? '' }}
 

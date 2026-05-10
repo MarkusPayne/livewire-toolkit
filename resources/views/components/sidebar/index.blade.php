@@ -93,7 +93,7 @@
                     x-transition:leave-start="translate-x-0"
                     x-transition:leave-end="{{ $closedTransform }}"
                     class="relative flex w-full max-w-xs flex-1">
-                    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 ark:bg-slate-800">
+                    <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4 dark:bg-slate-800">
                         <div class="relative flex h-16 shrink-0 items-center justify-between">
                             {{ $logo ?? '' }}
                             <button type="button" x-on:click="open = false">
@@ -112,8 +112,8 @@
         </div>
 
         {{-- Desktop persistent column --}}
-        <div class="hidden lg:fixed lg:inset-y-0 {{ $desktopSide }} lg:z-50 lg:flex lg:w-72 lg:flex-col dark:bg-slate-800">
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto {{ $desktopBorder }} border-gray-200 bg-white px-6 pb-4">
+        <div class="hidden lg:fixed lg:inset-y-0 {{ $desktopSide }} lg:z-50 lg:flex lg:w-72 lg:flex-col">
+            <div class="flex grow flex-col gap-y-5 overflow-y-auto {{ $desktopBorder }} border-gray-200 bg-white px-6 pb-4  dark:bg-slate-800">
                 <div class="flex h-16 shrink-0 items-center">
                     {{ $logo ?? '' }}
                 </div>

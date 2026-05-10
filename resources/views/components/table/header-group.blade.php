@@ -1,5 +1,5 @@
 @props([
-'background' => 'bg-white',
+'background' => 'bg-white dark:bg-slate-900',
 ])
 
 <div {{ $attributes->merge(['class' => $background.' table-header-group']) }}>

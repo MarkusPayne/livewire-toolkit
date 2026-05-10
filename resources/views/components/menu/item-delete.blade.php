@@ -1,6 +1,6 @@
 <x-toolkit::menu.close>
     <x-toolkit::menu.item wire:confirm.prompt="Are you sure?\n\nType DELETE to confirm|DELETE" {{ $attributes }}>
-        <x-toolkit::icon.delete class="size-3 text-red-600" />
+        <x-toolkit::icon.delete class="size-3 text-red-600 dark:text-rose-400" />
 
         @if ($slot->isEmpty())
             Delete

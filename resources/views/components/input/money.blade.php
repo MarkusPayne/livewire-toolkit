@@ -1,6 +1,6 @@
 <div class="relative">
     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <span class="text-gray-500 sm:text-sm sm:leading-5">
+        <span class="text-gray-500 dark:text-slate-400 sm:text-sm sm:leading-5">
             $
         </span>
     </div>

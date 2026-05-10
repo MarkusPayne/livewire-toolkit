@@ -16,7 +16,7 @@
         autocomplete="off"
         {{
             $attributes->merge([
-                'class' => 'flex-1 border-gray-300 block w-full transition duration-150 ease-in-out',
+                'class' => 'flex-1 border-gray-300 dark:border-slate-700 block w-full transition duration-150 ease-in-out',
             ])
         }} />
 </div>

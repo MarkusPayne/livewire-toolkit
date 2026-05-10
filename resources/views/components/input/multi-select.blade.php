@@ -5,7 +5,7 @@
 
 <div class="relative w-full" x-data="multiselect(@js($options))" x-modelable="current" x-on:click.outside="open = false" x-on:keydown.escape.window="open = false" {{ $attributes }}>
     <div
-            class="flex min-h-10 cursor-pointer items-center rounded-sm border border-gray-300"
+            class="flex min-h-10 cursor-pointer items-center rounded-sm border border-gray-300 dark:border-slate-700"
             x-on:click="toggle()"
             x-on:keydown.enter.prevent="toggle()"
             x-on:keydown.space.prevent="toggle()"
@@ -16,19 +16,19 @@
             :aria-expanded="open">
         <div class="flex flex-1 flex-wrap gap-1 px-2 py-1">
             <template x-if="current.length === 0">
-                <span class="text-sm text-gray-400" x-text="placeholder"></span>
+                <span class="text-sm text-gray-400 dark:text-slate-500" x-text="placeholder"></span>
             </template>
 
             <template x-for="selectedId in current" :key="selectedId">
-                <span class="inline-flex items-center gap-1 rounded-sm border border-gray-300 py-0.5 pr-1 pl-2 text-sm">
+                <span class="inline-flex items-center gap-1 rounded-sm border border-gray-300 dark:border-slate-700 py-0.5 pr-1 pl-2 text-sm">
                     <span x-text="options[selectedId]"></span>
-                    <button type="button" class="cursor-pointer text-red-500 hover:text-red-700" x-on:click.stop="remove(selectedId)" :aria-label="'Remove ' + options[selectedId]">&times;</button>
+                    <button type="button" class="cursor-pointer text-red-500 dark:text-rose-400 hover:text-red-700" x-on:click.stop="remove(selectedId)" :aria-label="'Remove ' + options[selectedId]">&times;</button>
                 </span>
             </template>
         </div>
 
         <div class="flex items-center px-2">
-            <svg xmlns='http://www.w3.org/2000/svg' class="size-5  text-gray-600" fill='none' viewBox='0 0 20 20'><path stroke='oklch(55.1% 0.027 264.364)' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/></svg>
+            <svg xmlns='http://www.w3.org/2000/svg' class="size-5 text-gray-600 dark:text-slate-400" fill='none' viewBox='0 0 20 20'><path stroke='oklch(55.1% 0.027 264.364)' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/></svg>
             {{--            <svg x-show="!open" class="size-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
             {{--                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />--}}
             {{--            </svg>--}}
@@ -42,7 +42,7 @@
             x-show="open"
             x-cloak
             x-transition.origin.top
-            class="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-sm border border-gray-300 bg-white shadow-sm"
+            class="absolute z-50 mt-1 max-h-64 w-full overflow-y-auto rounded-sm border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm"
             role="listbox"
             aria-multiselectable="true"
             x-on:keydown.arrow-down.prevent="focusNext()"
@@ -56,9 +56,9 @@
             <li
                     class="cursor-pointer px-3 py-2 text-sm"
                     :class="{
-                    'bg-green-100': isSelected(id),
-                    'bg-gray-100': focusedId === id && !isSelected(id),
-                    'bg-green-200': focusedId === id && isSelected(id),
+                    'bg-green-100 dark:bg-green-950': isSelected(id),
+                    'bg-gray-100 dark:bg-slate-700': focusedId === id && !isSelected(id),
+                    'bg-green-200 dark:bg-green-900': focusedId === id && isSelected(id),
                 }"
                     role="option"
                     :aria-selected="isSelected(id)"

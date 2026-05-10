@@ -1,12 +1,12 @@
 <div x-data="signature" x-modelable="currentSignature" wire:ignore {{ $attributes->merge(['class' => 'min-w-full sm:min-w-lg flex-col']) }}>
     <div class="flex items-center justify-center pb-3">
-        <button type="button" class="flex cursor-pointer items-center text-sm text-gray-700" x-on:click="clearSignature()">
+        <button type="button" class="flex cursor-pointer items-center text-sm text-gray-700 dark:text-slate-200" x-on:click="clearSignature()">
             <span class="pr-2">Clear</span>
             <x-toolkit::icon.close />
         </button>
     </div>
     <div x-ref="canvasWrap" class="relative w-full" style="aspect-ratio: 2/1">
-        <canvas class="absolute inset-0 h-full w-full border bg-gray-100" x-ref="pad" :id="$id('signature-input')"></canvas>
+        <canvas class="absolute inset-0 h-full w-full border bg-gray-100 dark:bg-slate-800" x-ref="pad" :id="$id('signature-input')"></canvas>
     </div>
 </div>
 

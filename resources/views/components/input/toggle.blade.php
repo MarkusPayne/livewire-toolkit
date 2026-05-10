@@ -12,7 +12,7 @@
         <label
             @click="$refs.toggle.click(); $refs.toggle.focus()"
             :id="$id('toggle-label')"
-            class="select-none text-sm font-medium text-gray-600"
+            class="select-none text-sm font-medium text-gray-600 dark:text-slate-400"
         >
             {{ $slot }}
         </label>
@@ -30,7 +30,7 @@
         >
         <span
             :class="value ? 'translate-x-[15px]' : 'translate-x-[3px]'"
-            class="size-3.5 rounded-full bg-white shadow-md transition"
+            class="size-3.5 rounded-full bg-white dark:bg-slate-200 shadow-md transition"
             aria-hidden="true"
         ></span>
         </button>

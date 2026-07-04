@@ -1,3 +1,4 @@
-<svg {{ $attributes->merge(['class' => 'h-4 w-4']) }} xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
-    <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 512 512" {{ $attributes->merge(['class' => 'h-4 w-4']) }}>
+    <path
+            d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 368h48V344 280h64 24V232H344 280V168 144H232v24 64H168 144v48h24 64v64 24z" />
 </svg>

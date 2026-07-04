@@ -15,11 +15,11 @@
             aria-haspopup="listbox"
             :aria-expanded="open">
         <div class="flex flex-1 flex-wrap gap-1 px-2 py-1">
-            <template x-if="current.length === 0">
+            <template x-if="!current || current.length === 0">
                 <span class="text-sm text-gray-400 dark:text-slate-500" x-text="placeholder"></span>
             </template>
 
-            <template x-for="selectedId in current" :key="selectedId">
+            <template x-for="selectedId in (current ?? [])" :key="selectedId">
                 <span class="inline-flex items-center gap-1 rounded-sm border border-gray-300 dark:border-slate-700 py-0.5 pr-1 pl-2 text-sm">
                     <span x-text="options[selectedId]"></span>
                     <button type="button" class="cursor-pointer text-red-500 dark:text-rose-400 hover:text-red-700" x-on:click.stop="remove(selectedId)" :aria-label="'Remove ' + options[selectedId]">&times;</button>
@@ -99,7 +99,7 @@
         },
 
         isSelected(id) {
-            return this.current.includes(String(id));
+            return (this.current ?? []).includes(String(id));
         },
 
         select(id) {
@@ -107,13 +107,13 @@
             if (this.isSelected(stringId)) {
                 this.remove(stringId);
             } else {
-                this.current.push(stringId);
+                this.current = [...(this.current ?? []), stringId];
             }
         },
 
         remove(id) {
             const stringId = String(id);
-            this.current = this.current.filter((item) => item !== stringId);
+            this.current = (this.current ?? []).filter((item) => item !== stringId);
         },
 
         selectFocused() {

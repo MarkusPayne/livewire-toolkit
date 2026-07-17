@@ -2,6 +2,8 @@
 
 This project uses the `markuspayne/livewire-toolkit` Composer package. Follow these rules whenever building Livewire components that use datatables, search, forms, modals, menus, or model select options.
 
+> Project rules may override the defaults in this file (modal sizing, layout choices); the project's own `.claude/rules/` win. Never hand-edit this file — it is republished on upgrade.
+
 ## Namespace
 
 All toolkit classes are under `MarkusPayne\LivewireToolkit\`:
@@ -183,9 +185,9 @@ Always nest components in this exact order:
         </x-toolkit::data-table.thead>
 
         <x-toolkit::data-table.tbody>
-            @foreach ($this->rows as $row)
+            @foreach ($this->rows as $vendor)
                 <x-toolkit::data-table.tr>
-                    <x-toolkit::data-table.td>{{ $row->column }}</x-toolkit::data-table.td>
+                    <x-toolkit::data-table.td>{{ $vendor->name }}</x-toolkit::data-table.td>
                 </x-toolkit::data-table.tr>
             @endforeach
         </x-toolkit::data-table.tbody>
@@ -324,8 +326,8 @@ Use `<x-toolkit::menu.*>` for action dropdowns on table rows:
     <x-toolkit::menu.index>
         <x-toolkit::menu.button-actions />
         <x-toolkit::menu.items>
-            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-model', { id: {{ $row->id }} })" />
-            <x-toolkit::menu.item-delete wire:click="delete({{ $row->id }})" />
+            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-model', { id: {{ $vendor->id }} })" />
+            <x-toolkit::menu.item-delete wire:click="delete({{ $vendor->id }})" />
         </x-toolkit::menu.items>
     </x-toolkit::menu.index>
 

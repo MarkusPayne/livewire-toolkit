@@ -209,10 +209,10 @@ Returns a plain array (not Collection). Cached with Redis tags, auto-flushed on 
     <x-toolkit::menu.index>
         <x-toolkit::menu.button-actions />
         <x-toolkit::menu.items>
-            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-model', { id: {{ $row->id }} })" />
-            <x-toolkit::menu.item-delete wire:click="delete({{ $row->id }})" />
+            <x-toolkit::menu.item-edit x-on:click="$dispatch('edit-model', { id: {{ $vendor->id }} })" />
+            <x-toolkit::menu.item-delete wire:click="delete({{ $vendor->id }})" />
             <x-toolkit::menu.item-add x-on:click="$dispatch('create-child')">Add Child</x-toolkit::menu.item-add>
-            <x-toolkit::menu.item-download wire:click="export({{ $row->id }})" />
+            <x-toolkit::menu.item-download wire:click="export({{ $vendor->id }})" />
         </x-toolkit::menu.items>
     </x-toolkit::menu.index>
 

@@ -20,9 +20,9 @@
             },
 
             selectAll() {
+                const container = this.$el.closest('[wire\\:id]') ?? this.$el.closest('table');
 
-
-                document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+                container.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
                     if (checkbox.dataset.selectAll) {
                         checkbox.checked = true;
                         this.$wire.selectedRows.push(checkbox.value);
